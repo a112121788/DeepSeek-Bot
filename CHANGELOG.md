@@ -11,7 +11,7 @@ All notable changes to DS Bot are listed here. The format follows [Keep a Change
 ### Changed
 
 - Every Bot can change its own name, role, color, model and instructions; only a Main Bot changes other Bots.
-- README and the plugin interface are Chinese-first: `README.md` is Chinese, English lives in `README.en.md`, and the UI defaults to Chinese when DSH has no language set.
+- README and the plugin interface are Chinese-first: root and `ds-bot` `README.md` are Chinese, English lives in `README.en.md`, and the UI defaults to Chinese when DSH has no language set.
 
 ## [0.1.2] - 2026-10-11
 
@@ -76,9 +76,9 @@ If you used the legacy `dsh-bot` package, remove it before you install `ds-bot`.
 ### Known limitations
 
 - Tested with DSH `0.2.1-alpha.1`, mainly on Linux and in DSH Web. DSH is an alpha, and a newer DSH can break the plugin.
-- The Bot browser is in DSH Desktop only, and Bots can only read pages ([Bot browser](ds-bot/README.md#bot-browser)).
-- Secrets are stored without encryption, and only exact copies of a value are hidden ([Secrets](ds-bot/README.md#secrets)).
-- Only one DSH can change a team at a time; a second DSH on the same DSH home opens it read-only ([Data and backups](ds-bot/README.md#data-and-backups)).
+- The Bot browser is in DSH Desktop only, and Bots can only read pages ([Bot browser](ds-bot/README.en.md#bot-browser)).
+- Secrets are stored without encryption, and only exact copies of a value are hidden ([Secrets](ds-bot/README.en.md#secrets)).
+- Only one DSH can change a team at a time; a second DSH on the same DSH home opens it read-only ([Data and backups](ds-bot/README.en.md#data-and-backups)).
 - Group chats use many tokens: each member reads the group and answers in turn.
 
 [Unreleased]: https://github.com/FeiZhuLulu/DeepSeek-Bot/compare/v0.1.2...HEAD

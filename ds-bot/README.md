@@ -1,42 +1,44 @@
 # ds-bot
 
-The DS Bot plugin for [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) (dsh). It turns dsh into a team of long-lived Bots that talk to you, to each other and in group chats. See the [project page](../README.md) for an overview, install steps and screenshots.
+中文 | [English](README.en.md)
 
-> Early release (v0.1). Features, tools and the saved data format can still change.
+DS Bot 是 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness)（dsh）的插件。它把 dsh 变成一组长驻 Bot：和你对话、互相发消息、在群聊里协作。概览、安装步骤和截图见[项目主页](../README.md)。
 
-Tested with dsh `0.2.1-alpha.1` (Web and Desktop) on Linux.
+> 早期版本（v0.1）。功能、工具和存盘格式仍可能变化。
 
-## Features
+已在 Linux 上用 dsh `0.2.1-alpha.1`（Web 与 Desktop）验证。
 
-- **Long-lived Bots**: each Bot is a dsh Session in the "DS Bot" workspace, with its own name, role, instructions and model.
-- **Bots work together**: `message_bot` sends a message to another Bot, `create_bot` and `update_bot` add and set up Bots, and `ask_user` asks you a question without blocking the other Bots.
-- **Group chats**: members speak one at a time, and each one reads the latest messages first. A message can `@Name` a member to pass the turn on. A member with nothing new to add stays quiet (`[PASS]`). Each member has its own hidden Session per group, so a group never reads a Bot's private chat.
-- **Roles and permissions**:
+## 功能
 
-  | Who | Can do |
+- **长驻 Bot**：每个 Bot 都是「DS Bot」工作区里的一个 dsh Session，有自己的名字、角色、说明和模型。
+- **Bot 协作**：`message_bot` 给另一个 Bot 发消息，`create_bot` / `update_bot` 创建与配置 Bot，`ask_user` 向你提问且不阻塞其他 Bot。
+- **群聊**：成员轮流发言，每人先读最新消息。消息可用 `@Name` 把回合交给某人；没有新内容可说的成员保持安静（`[PASS]`）。每个成员在每个群里有独立的隐藏 Session，群聊读不到 Bot 的私聊。
+- **角色与权限**：
+
+  | 谁 | 能做什么 |
   |---|---|
-  | You | Everything |
-  | Main Bot (there can be more than one) | Manage every group; change and delete Bots |
-  | Group admin | Manage its own group only (name, notice, members, reply mode) |
-  | Member | Speak in the group and `@` another member |
+  | 你 | 全部 |
+  | 主 Bot（可以有多个） | 管理所有群；改动、删除 Bot |
+  | 群管理员 | 只管理自己的群（名称、公告、成员、回复模式） |
+  | 成员 | 在群里发言，并 `@` 其他成员 |
 
-- **Long chats stay inside the model's window**: dsh's own compaction never runs on a Bot's Session. When a turn ends past the check line (a share of the model's context window), a small separate model call, the context steward, reads the latest messages of the chat and decides once. If the work is still under way, the chat is condensed in place into a checkpoint: a handoff summary plus your recent messages word for word. If the work has reached a stopping point, the Bot writes a handoff note and continues in a new part. Either way you still see one chat, with no marker. Earlier parts and condensed messages stay searchable in a full-text index (`node:sqlite` FTS5) through `read_own_chat`.
-- **Memory**: each Bot keeps notes across all its conversations, and the team shares one more. See [Memory](#memory).
-- **Web search**: see [Web search](#web-search).
-- **Bot browser (dsh Desktop only)**: see [Bot browser](#bot-browser).
-- **Images**: for a model that cannot read images, a vision model first turns the image into text.
-- **Secrets**: a Bot asks for an API key or token with a card in its own chat and never sees the value. See [Secrets](#secrets).
-- **Usage**: Settings → Usage shows token usage by time (24 hours to 12 months, or days picked on a calendar), by Bot and by model, with a page for each Bot and each model. Calls that a Session logs are read from the logs, so older chats count too. Calls that leave no log (checkpoints, handoff notes, the steward, image readings, dsh titles and compaction) are counted while they stream, from the time the plugin runs. Tokens only, no cost.
-- **Make it yours**: name, role, instructions, model and look (20 characters and 12 colors, or your own photo) for each Bot; a theme, an accent color and an avatar animation level (quiet, normal or lively) for the team. A pinned Bot or group chat shows a small pushpin in the sidebar. Settings has these pages: General (look), Bots (Main Bots and each Bot's settings), Group chats (each group's settings), Connectors, Scheduled tasks, Usage, Secrets, Feedback and About DS Bot (versions, updates and links).
+- **长对话不超出模型窗口**：Bot 的 Session 不会跑 dsh 自带的压缩。回合结束时若越过检查线（模型上下文窗口的一定比例），会有一次独立的小模型调用（context steward）读取最近消息并只决定一次。工作仍在进行时，对话就地收成检查点：交接摘要 + 你最近的消息原文。工作已到停点时，Bot 写交接笔记并在新 part 继续。你始终看到一条连续对话，没有标记。更早的 part 与收起的消息仍可通过全文索引（`node:sqlite` FTS5）用 `read_own_chat` 搜索。
+- **记忆**：每个 Bot 在所有对话里保留笔记，团队另有一份共享记忆。见[记忆](#记忆)。
+- **网页搜索**：见[网页搜索](#网页搜索)。
+- **Bot 浏览器（仅 dsh Desktop）**：见[Bot 浏览器](#bot-浏览器)。
+- **图片**：模型不能读图时，先由视觉模型把图转成文字。
+- **密钥**：Bot 在自己的对话里用卡片索要 API key 或 token，且永远看不到明文。见[密钥](#密钥)。
+- **用量**：设置 → 用量按时间（24 小时到 12 个月，或日历选日）、按 Bot、按模型显示 Token 用量，并有每个 Bot / 每个模型的分页。Session 日志里的调用会从日志读取，旧对话也计入。没有日志的调用（检查点、交接笔记、steward、读图、dsh 标题与压缩）在插件运行期间边流式边计数。只计 Token，不计费用。
+- **按你来定制**：每个 Bot 的名字、角色、说明、模型与外观（20 个角色与 12 种颜色，或自选照片）；团队主题、强调色与头像动画级别（安静、正常或活泼）。置顶的 Bot 或群聊在侧栏显示小图钉。设置页包括：通用（外观）、Bot（主 Bot 与各 Bot 设置）、群聊（各群设置）、连接器、定时任务、用量、密钥、反馈，以及关于 DS Bot（版本、更新与链接）。
 
-## Install
+## 安装
 
-The [project page](../README.md#install) has the full steps for dsh Desktop and dsh Web. In short:
+[项目主页](../README.md#安装)有 dsh Desktop 与 dsh Web 的完整步骤。简要如下：
 
-- dsh Desktop: Settings → Plugins → add `ds-bot` (npm), a `.tgz` file, or `github:FeiZhuLulu/DeepSeek-Bot#v0.1.2&path:/ds-bot`.
-- Command line: `dsh plugin --profile desktop add ds-bot` (or `--profile web`).
+- dsh Desktop：设置 → 插件 → 添加 `ds-bot`（npm）、`.tgz` 文件，或 `github:FeiZhuLulu/DeepSeek-Bot#v0.1.2&path:/ds-bot`。
+- 命令行：`dsh plugin --profile desktop add ds-bot`（或 `--profile web`）。
 
-To work on the plugin from a checkout, add it to a dsh profile as a linked dependency and a bundle:
+从检出目录开发时，把插件加到 dsh profile 里作为链接依赖和 bundle：
 
 ```json
 {
@@ -45,193 +47,193 @@ To work on the plugin from a checkout, add it to a dsh profile as a linked depen
 }
 ```
 
-Run `pnpm install` in the profile folder, then start dsh from the deepseek-harness repository:
+在 profile 目录运行 `pnpm install`，再从 deepseek-harness 仓库启动 dsh：
 
 ```sh
 pnpm -s dsh --profile web --no-open
 ```
 
-The first time the team opens, the plugin creates a Main Bot called Chief.
+团队第一次打开时，插件会创建一个叫 Chief 的主 Bot。
 
-**Upgrading from the legacy `dsh-bot` package**: earlier builds used the package name `dsh-bot`. Remove `dsh-bot` from the profile before you add `ds-bot`, because both use the plugin id `bot`. Your team, chats and secrets stay where they are (see [Data and backups](#data-and-backups)); saved browser settings, the theme and Bot colors move over the first time DS Bot opens.
+**从旧包 `dsh-bot` 升级**：更早的构建用包名 `dsh-bot`。先从 profile 去掉 `dsh-bot` 再加 `ds-bot`，因为两者都用插件 id `bot`。团队、对话与密钥仍在原处（见[数据与备份](#数据与备份)）；已保存的浏览器设置、主题与 Bot 颜色会在 DS Bot 首次打开时迁过来。
 
-## Configuration
+## 配置
 
-Options go in the profile's `cordis.patch.yml`, under the `bot` entry. All of them are optional.
+选项写在 profile 的 `cordis.patch.yml` 里，挂在 `bot` 条目下。全部可选。
 
 ```yaml
 - id: bot
   name: ds-bot
   config:
-    workspace: /path/to/workspace   # where the Bots work; default <home>/workspace
-    home: /path/to/bot-data         # where the team is saved; default $DSH_HOME/bot
-    checkRatio: 0.8                 # share of the model's usable window where the steward decides
-    browser: true                   # force the Bot browser on or off; default on in Desktop only
-    memory: true                    # false turns memory off: no memory tools, section or panel
-    memoryReview: true              # false leaves memory to the Bots' own remember calls
-    diagnosticsFile: false          # keep the error log in memory only; default <home>/logs/diagnostics.jsonl
-    updateCheck: true               # look for a newer DS Bot when a window opens; default true
-    updateRegistry: https://registry.example/   # ask only this npm registry for updates
-    github: false                   # hide the GitHub connector; default shown in Connectors
-    gitee: false                    # hide the Gitee connector; default shown in Connectors
+    workspace: /path/to/workspace   # Bot 工作目录；默认 <home>/workspace
+    home: /path/to/bot-data         # 团队存盘位置；默认 $DSH_HOME/bot
+    checkRatio: 0.8                 # 可用窗口中 steward 做决定的比例
+    browser: true                   # 强制开关 Bot 浏览器；默认仅 Desktop 开启
+    memory: true                    # false 关闭记忆：无记忆工具、段落与面板
+    memoryReview: true              # false 时只靠 Bot 自己的 remember 调用
+    diagnosticsFile: false          # 错误日志只留在内存；默认 <home>/logs/diagnostics.jsonl
+    updateCheck: true               # 窗口打开时检查更新；默认 true
+    updateRegistry: https://registry.example/   # 只向该 npm registry 查更新
+    github: false                   # 隐藏 GitHub 连接器；默认在连接器里显示
+    gitee: false                    # 隐藏 Gitee 连接器；默认在连接器里显示
 ```
 
-**Updates**: when a window opens, DS Bot asks where it was installed from for a newer release: the npm registry (the one the DSH plugin manager installs from, then its fallbacks), or the latest GitHub release for a `github:…#vX.Y.Z` install. A newer version shows a cloud button at the top right of the sidebar; **Update** reinstalls DS Bot through the DSH plugin manager, and the new version runs from the next DSH start. A linked or local checkout is never offered an update. Settings → About DS Bot shows the same state, with **Check for updates** to ask again at once.
+**更新**：窗口打开时，DS Bot 会按安装来源查是否有新版本：npm registry（DSH 插件管理器使用的源及其回退），或 `github:…#vX.Y.Z` 安装对应的最新 GitHub release。有新版本时，侧栏右上角出现云朵按钮；点 **更新** 经 DSH 插件管理器重装，新版本从下次启动 dsh 起生效。链接或本地检出不会提示更新。设置 → 关于 DS Bot 显示同一状态，并可用 **检查更新** 立刻再查。
 
-The same card can carry DSH itself: a DS Bot release may name the DSH release it was verified against (`dsBot.verifiedDsh` in its `package.json`), and only that version is offered — running something newer is a downgrade offer too. A release that names no version offers no DSH update. A DSH installed from npm is swapped by `npm install -g @deepseek-ai/dsh@<version>`. DSH Desktop installs the newest release its own updater finds, so the card shows DSH there only when that release is the verified one, and **Open updates** opens the app's update panel. A release may raise the floor with `dsBot.minBot`: until the bot itself is that new, the DSH row waits.
+同一卡片也可携带 DSH 自身：某个 DS Bot release 可声明它验证过的 DSH 版本（`package.json` 里的 `dsBot.verifiedDsh`），且只提供该版本——跑得更新也会被当成降级提议。未声明版本则不提供 DSH 更新。用 npm 安装的 DSH 会通过 `npm install -g @deepseek-ai/dsh@<version>` 切换。DSH Desktop 安装其自带更新器找到的最新版，因此仅当该版本就是验证版本时卡片才显示 DSH，**打开更新** 打开应用自己的更新面板。release 还可用 `dsBot.minBot` 抬高门槛：Bot 自身未到该版本前，DSH 行会等待。
 
-## Models
+## 模型
 
-Model providers are set up with dsh's `llm-pi-ai` plugin in `cordis.patch.yml`. Every Bot runs on one model of its own, from the models DSH serves. A new team's first Main Bot has none: its chat opens on a model card and it greets the user only after a pick. The Create Bot form starts on the DSH default model. The Bot's details panel and settings (or a Main Bot's `update_bot`) change it; a Bot whose model is no longer served shows the card again. A team saved by an older version keeps the model each Bot last ran on.
+模型提供方用 dsh 的 `llm-pi-ai` 插件在 `cordis.patch.yml` 里配置。每个 Bot 跑自己的一个模型，来自 DSH 提供的模型列表。新团队的第一个主 Bot 起初没有模型：对话打开模型卡片，选好后才问候用户。创建 Bot 表单默认落在 DSH 默认模型上。Bot 详情与设置（或主 Bot 的 `update_bot`）可更换；模型不再可用时会再次显示卡片。旧版存盘的团队保留各 Bot 上次使用的模型。
 
-- Give every model a `contextWindow`. DS Bot takes its lines from it: the usable window is the window minus the reply reserve (`maxTokens`), the hard line is 95% of that, and the check line is `checkRatio` of it. A model without `contextWindow` gets the adapter's default (262,144 tokens for `llm-pi-ai`), which may be wrong for that model; a model that reports no window at all counts as 500,000.
-- To send images, the provider needs `defaultInput: [ text, image ]`.
-- Keep API keys out of the repository. Use dsh's own key storage or environment variables.
+- 请给每个模型配置 `contextWindow`。DS Bot 据此划线：可用窗口 = 窗口减去回复预留（`maxTokens`），硬线为其 95%，检查线为 `checkRatio`。没有 `contextWindow` 时用适配器默认值（`llm-pi-ai` 为 262,144），可能与该模型不符；完全不报告窗口时按 500,000 计。
+- 要发图片，提供方需 `defaultInput: [ text, image ]`。
+- 不要把 API key 写进仓库。用 dsh 自带的密钥存储或环境变量。
 
-## Memory
+## 记忆
 
-A Bot remembers what should last beyond one conversation: your preferences, decisions, corrections and facts it should not ask again. Memory is plain Markdown in the [Agent Memory Repo](https://github.com/AgentMemoryRepo/agentmemoryrepo) format: one entry per line, ending in `[source: …; added: …]`.
+Bot 会记住应跨过单次对话保留的内容：偏好、决定、纠正，以及不该再问的事实。记忆是 [Agent Memory Repo](https://github.com/AgentMemoryRepo/agentmemoryrepo) 格式的纯 Markdown：一行一条，以 `[source: …; added: …]` 结尾。
 
-After each turn, a memory review reads what is new in the Bot's chat (and in each group, per member) and keeps, updates or removes entries itself, so memory does not depend on the Bot deciding to call `remember`. It keeps only what you say, writes entries in your language, and refuses keys, passwords and ID numbers.
+每个回合结束后，记忆审阅会读取 Bot 对话（以及各群中每位成员）的新内容，自行保留、更新或删除条目，因此记忆不依赖 Bot 是否调用 `remember`。它只保留你说的内容，用你的语言写条目，并拒绝密钥、密码与身份证号。
 
-- **Two scopes**: each Bot has its own memory, and the team memory is read by every Bot. A Bot writes its own. Main Bots and group admins (of any group) also write the team memory; a Main Bot can read and change another Bot's memory when you ask.
-- **Tools**: `remember` saves an entry or replaces one (`replace`), `forget` removes one, and `recall` searches every entry, reads a topic whole, or lists what is saved. The Bot adds the source (a part anchor such as `part 2 #1234`, which `read_own_chat` opens) and the date; a Bot that writes for others is named with `by:`.
-- **Files**: `MEMORY.md` holds what every conversation needs, and details go in topic files linked from its `## Index` as `[[topic]]`.
-- **In the prompt**: both `MEMORY.md` files go into the Bot's system prompt. The section is frozen when a Session starts, so the provider's prompt cache holds; a change shows from the next part or checkpoint, and `recall` finds it at once.
-- **Fixed sizes**: an entry has at most 300 characters, a `MEMORY.md` 4,000, a topic 16,000, and a scope 40 topics. A save past a limit fails and says how to make room.
-- **Safety**: memory is data, not instructions. An entry that looks like a key or token is refused, and a Bot is told not to save what a web page, file or tool result asks it to remember.
-- **History**: files change in place, and `journal.jsonl` keeps every change with the line before and after. When a Bot is deleted, its memory moves to `archive/`.
+- **两个范围**：每个 Bot 有自己的记忆，团队记忆则所有 Bot 可读。Bot 写自己的记忆。主 Bot 与（任意群的）群管理员还可写团队记忆；你要求时，主 Bot 可读改其他 Bot 的记忆。
+- **工具**：`remember` 保存或替换条目（`replace`），`forget` 删除，`recall` 搜索全部条目、整读某个主题，或列出已存内容。Bot 会补上来源（如 `part 2 #1234`，可用 `read_own_chat` 打开）与日期；替别人写时用 `by:` 署名。
+- **文件**：`MEMORY.md` 放每次对话都需要的内容，细节放主题文件，并在其 `## Index` 里以 `[[topic]]` 链接。
+- **进入提示词**：两份 `MEMORY.md` 都会进入 Bot 的系统提示。段落在 Session 启动时冻结，以便提供方提示缓存命中；变更从下一个 part 或检查点起生效，`recall` 则立刻能找到。
+- **固定上限**：一条最多 300 字符，一份 `MEMORY.md` 4,000，一个主题 16,000，一个范围最多 40 个主题。超限保存会失败并说明如何腾出空间。
+- **安全**：记忆是数据，不是指令。像密钥或 token 的条目会被拒绝；也告知 Bot 不要保存网页、文件或工具结果要求它记住的内容。
+- **历史**：文件就地改写，`journal.jsonl` 保留每次变更的前后行。删除 Bot 时，其记忆移到 `archive/`。
 
-**The memory panel**: the Bot's details panel has a Memory row with the entry count; Manage opens the memory panel.
+**记忆面板**：Bot 详情有「记忆」行并显示条目数；「管理」打开记忆面板。
 
-- **Memory summary**: the Bot's model writes a short summary in prose from every entry, in the interface language. It is written again when the entries change, and the ⋯ menu can regenerate it.
-- **All entries**: the ⋯ menu lists every entry by scope and topic, with its date and author, and the size of each `MEMORY.md`. Remove takes two clicks.
-- **Ask or update**: ask what the Bot remembers, or tell it what to add, correct or remove. One model call answers from the entries only, and its changes go through the same checks as the tools.
-- A line in the chat ("Memory updated") shows when a Bot changes memory and opens the panel. When memory changes in the background, the Bot's capsule at the top of its chat stretches to say "Memory updated" for a moment; clicking it opens the memory panel.
+- **记忆摘要**：Bot 的模型按界面语言，从全部条目写成短散文摘要。条目变化时重写，⋯ 菜单也可重新生成。
+- **全部条目**：⋯ 菜单按范围与主题列出每条，含日期与作者，以及各 `MEMORY.md` 的大小。删除需点两次。
+- **询问或更新**：问 Bot 还记得什么，或告诉它增改删什么。一次模型调用只依据条目作答，变更走与工具相同的检查。
+- 对话里的「记忆已更新」行表示 Bot 改了记忆并可打开面板。后台变更时，聊天顶部的 Bot 胶囊会短暂拉长显示「记忆已更新」；点击即打开记忆面板。
 
-A read-only dsh (see [Data and backups](#data-and-backups)) shows memory but cannot change it.
+只读 dsh（见[数据与备份](#数据与备份)）可看记忆但不能改。
 
-## Web search
+## 网页搜索
 
-The package includes a second plugin, `ds-bot/web-search`. It registers the search provider `auto`, and `cordis.patch.yml` makes it the default. Each search goes in this order:
+包内还有第二个插件 `ds-bot/web-search`。它注册搜索提供方 `auto`，并由 `cordis.patch.yml` 设为默认。每次搜索按此顺序：
 
-1. If the profile names another `searchProvider`, that one is used.
-2. The current model route's own search, with that route's key and host. The plugin knows the Anthropic Messages, OpenAI Responses and Gemini protocols, and a few search APIs (Ollama, Kimi, Zhipu, MiMo). Add more with `searchApis`.
-3. A fallback without a key: the public result pages of Bing and DuckDuckGo.
-4. If nothing works, the search fails and tells the model not to guess addresses.
+1. 若 profile 指定了其他 `searchProvider`，用那个。
+2. 当前模型路由自带的搜索，使用该路由的密钥与主机。插件认识 Anthropic Messages、OpenAI Responses 与 Gemini 协议，以及若干搜索 API（Ollama、Kimi、智谱、MiMo）。可用 `searchApis` 追加。
+3. 无密钥回退：Bing 与 DuckDuckGo 的公开结果页。
+4. 全部失败则搜索失败，并告诉模型不要猜测地址。
 
-Each result starts with a `Search backend: …` line that names the path it took.
+每条结果以 `Search backend: …` 开头，标明走了哪条路径。
 
-## Bot browser
+## Bot 浏览器
 
-In dsh Desktop, a Bot's chat header has a globe button. It opens that Bot's own browser panel.
+在 dsh Desktop 中，Bot 对话标题栏有地球按钮，打开该 Bot 自己的浏览器面板。
 
-- **One partition per Bot** (`bot:<id>`): logins and cookies belong to that Bot only.
-- **The Bot can read the page**: the `read_browser` tool reads the page's DOM, not a screenshot. The text becomes Markdown with headings, nested lists, tables, code blocks and quotes. Links and form controls are marked `[#n]` in place and listed below with their targets and values. The tool also reads the text you selected. Long pages are read in parts (`from`). Page content is treated as data, never as instructions.
-  - It reads open Shadow DOM (with `<slot>`) and same-origin iframes up to 3 levels deep.
-  - It reads only what is visible: `display:none`, `visibility:hidden`, zero-height and closed `<details>` content is skipped.
-  - It never reads the values of password, credit card (`autocomplete="cc-*"`) or one-time code fields.
-  - Limits: 400,000 characters, 150,000 nodes, 5,000 rows per table, 3,000 links and controls, 1.5 seconds. A cut result says so.
-  - It cannot read cross-origin iframes (one line with the address), closed shadow roots, canvas content (online editors, maps), or text in CSS `::before` / `::after`. On pages that render on demand, only the rendered part is read.
-  - Read only: the Bot cannot click, type, scroll or open addresses yet.
-- **Addresses**: http and https only. localhost and LAN addresses are allowed; cloud metadata addresses (such as `169.254.x.x`) and dsh's own ports are not.
-- The browser panel and the details drawer share the right column; opening one closes the other. Switching chats switches the panel to that Bot. Deleting a Bot clears its browser and saved address.
+- **每个 Bot 一个分区**（`bot:<id>`）：登录与 cookie 只属于该 Bot。
+- **Bot 可读页面**：`read_browser` 读 DOM，不是截图。文本变成带标题、嵌套列表、表格、代码块与引用的 Markdown。链接与表单控件在文中标为 `[#n]`，并在下方列出目标与取值。也会读取你选中的文字。长页面可分段读（`from`）。页面内容当作数据，永不当作指令。
+  - 可读开放 Shadow DOM（含 `<slot>`）以及同域 iframe，最多 3 层。
+  - 只读可见内容：跳过 `display:none`、`visibility:hidden`、零高度与合上的 `<details>`。
+  - 永不读取密码、信用卡（`autocomplete="cc-*"`）或一次性验证码字段的值。
+  - 上限：400,000 字符、150,000 节点、每表 5,000 行、3,000 个链接与控件、1.5 秒。被截断时会说明。
+  - 读不了跨域 iframe（一行带地址）、封闭 shadow root、canvas 内容（在线编辑器、地图），或 CSS `::before` / `::after` 文字。按需渲染的页面只读已渲染部分。
+  - 只读：Bot 还不能点击、输入、滚动或打开地址。
+- **地址**：仅 http 与 https。允许 localhost 与局域网；不允许云元数据地址（如 `169.254.x.x`）与 dsh 自己的端口。
+- 浏览器面板与详情抽屉共用右侧栏；打开一个会关闭另一个。切换对话会切换到对应 Bot 的面板。删除 Bot 会清掉其浏览器与已存地址。
 
-dsh Web has no browser panel and no `read_browser` tool.
+dsh Web 没有浏览器面板，也没有 `read_browser` 工具。
 
-## Secrets
+## 密钥
 
-When a Bot needs an API key, token or password, it calls `request_secret`, and a secret card shows in its own chat. The Bot never sees the value.
+Bot 需要 API key、token 或密码时调用 `request_secret`，卡片出现在它自己的对话里。Bot 永远看不到明文。
 
-- **Fill in**: the field hides what you type, is not part of a form and is not autofilled. Choose "All Bots" or "Only this Bot" and select Save. A value must have at least 4 characters (a 4-digit PIN works). A value of 8 characters or more is hidden wherever it appears; a shorter one only where no letter or digit touches it, so ordinary words stay intact.
-- **Allow**: if the secret is already saved but this Bot is not allowed to use it, the card only asks whether to allow it. You can also replace the value there.
-- **Use**: the value goes only into the Bot's shell environment as `DSH_SECRET_<NAME>` (`$DSH_SECRET_NAME` in bash, `$env:DSH_SECRET_NAME` in PowerShell). `list_secrets` lists the names a Bot can use.
-- **Masking**: before a tool result is saved and before each request goes to the model, every copy of a secret value is replaced with `[secret:<NAME>]`.
-- **Manage**: Settings → Secrets lists every secret by name, purpose, the Bot that asked and the last use. You can change who may use it, replace the value, delete it or add one. Deleting a Bot removes it from every secret.
-- **Storage**: `<DSH_HOME>/bot/secrets.json`, file mode 600, written atomically. Values are never in `state.json` or logs.
+- **填写**：输入框隐藏内容，不属于表单、也不会自动填充。选择「全部 Bot」或「仅此 Bot」后保存。至少 4 个字符（4 位 PIN 可用）。8 个字符及以上会在所有出现处隐藏；更短的只在两侧没有字母数字时隐藏，以免普通词被误伤。
+- **授权**：密钥已保存但此 Bot 尚未获准使用时，卡片只询问是否授权；也可在此替换取值。
+- **使用**：取值只进入 Bot 的 shell 环境，名为 `DSH_SECRET_<NAME>`（bash 里 `$DSH_SECRET_NAME`，PowerShell 里 `$env:DSH_SECRET_NAME`）。`list_secrets` 列出该 Bot 可用的名称。
+- **遮罩**：工具结果落盘前、以及每次请求发给模型前，每个密钥明文副本都会被替换为 `[secret:<NAME>]`。
+- **管理**：设置 → 密钥按名称、用途、请求它的 Bot 与最近使用列出。可改权限、替换取值、删除或新增。删除 Bot 会从每个密钥的授权里去掉它。
+- **存储**：`<DSH_HOME>/bot/secrets.json`，文件模式 600，原子写入。取值从不进 `state.json` 或日志。
 
-Limits:
+限制：
 
-- On Windows, the file mode has no effect; the file is protected by your user folder only.
-- Only exact copies of a value are masked. A Bot that encodes, splits or reverses a value can still print it. Do not give important secrets to a Bot you do not trust.
-- On a page that is not HTTPS (for example dsh Web opened over http on a LAN), the value crosses the network in clear text. The card warns you.
-- Group chats show no cards; a Bot asks in its own chat.
+- Windows 上文件模式无效，只靠用户目录保护。
+- 只遮罩完全相同的副本。Bot 若编码、拆分或反转取值仍可能打印出来。不要把重要密钥交给不信任的 Bot。
+- 非 HTTPS 页面（例如局域网用 http 打开的 dsh Web）上，取值会明文过网。卡片会警告。
+- 群聊不显示卡片；Bot 在自己的对话里索要。
 
-## Data and backups
+## 数据与备份
 
-The plugin saves its data in `config.home`. Without it, the folder is `$DSH_HOME/bot`, or `~/.dsh/bot` when `DSH_HOME` is not set.
+插件把数据保存在 `config.home`。未配置时目录为 `$DSH_HOME/bot`；未设 `DSH_HOME` 时为 `~/.dsh/bot`。
 
-| System | Default folder |
+| 系统 | 默认目录 |
 |---|---|
-| Linux, macOS | `~/.dsh/bot/` |
+| Linux、macOS | `~/.dsh/bot/` |
 | Windows | `C:\Users\<user>\.dsh\bot\` |
 
-- To move all dsh data (Sessions, profiles and plugin data), set `DSH_HOME`.
-- To move only the plugin data, set `home` in the configuration (see [Configuration](#configuration)).
+- 要整体迁移 dsh 数据（Session、profile 与插件数据），设置 `DSH_HOME`。
+- 只迁移本插件数据，在配置里设 `home`（见[配置](#配置)）。
 
-Files in `bot/`:
+`bot/` 里的文件：
 
-| File | Content |
+| 文件 | 内容 |
 |---|---|
-| `state.json` | The team: Bots, groups, Bot-to-Bot messages, preferences and open questions |
-| `state.lock` | The dsh that is using this data (pid and host). It is removed when that dsh exits. |
-| `chat-index.sqlite` | Full-text index of older chat parts (`read_own_chat`); rebuilt if deleted |
-| `usage.sqlite` | Token counts for the Usage page; rebuilt from the Session logs if deleted, losing only the calls outside the logs and the names of deleted Bots |
-| `memory/` | Memory (see [Memory](#memory)): `bots/<id>/` and `team/` (`MEMORY.md` and topics), `journal.jsonl` (every change), `snapshots/` (the section each Session froze), `summaries/` (the panel's summary; safe to delete), `reviewed.json` (how far the memory review has read) and `archive/` (deleted Bots) |
-| `ocr.json` | Cache of image text; safe to delete |
-| `workspace` | The Bots' working folder (`config.workspace` changes it) |
-| `secrets.json` | Saved secrets. Treat backups of it like passwords. |
-| `logs/diagnostics.jsonl` | Recent errors and warnings, with keys, tokens, saved secrets and the home folder removed. It moves to `diagnostics.jsonl.1` past 1 MB. Safe to delete. |
+| `state.json` | 团队：Bot、群、Bot 间消息、偏好与未决问题 |
+| `state.lock` | 正在使用这份数据的 dsh（pid 与主机）。该 dsh 退出时删除。 |
+| `chat-index.sqlite` | 旧对话 part 的全文索引（`read_own_chat`）；删掉会重建 |
+| `usage.sqlite` | 用量页的 Token 计数；删掉后可从 Session 日志重建，只会丢掉日志外的调用与已删 Bot 的名字 |
+| `memory/` | 记忆（见[记忆](#记忆)）：`bots/<id>/` 与 `team/`（`MEMORY.md` 与主题）、`journal.jsonl`（每次变更）、`snapshots/`（各 Session 冻结的段落）、`summaries/`（面板摘要，可删）、`reviewed.json`（记忆审阅读到哪里）与 `archive/`（已删 Bot） |
+| `ocr.json` | 图片文字缓存；可删 |
+| `workspace` | Bot 的工作目录（`config.workspace` 可改） |
+| `secrets.json` | 已存密钥。备份时按密码对待。 |
+| `logs/diagnostics.jsonl` | 最近错误与警告，已去掉密钥、token、已存密钥与主目录。超过 1 MB 会滚到 `diagnostics.jsonl.1`。可删。 |
 
-The chats themselves are dsh Sessions and are not in `bot/`: they are in `~/.dsh/sessions/`. dsh keeps its workspace list in `~/.dsh/storages/workspace.json` and profiles (with model settings) in `~/.dsh/profiles/`. Bot browser logins are not saved: Desktop keeps each Bot's partition in memory only.
+对话本身是 dsh Session，不在 `bot/` 里：在 `~/.dsh/sessions/`。dsh 的工作区列表在 `~/.dsh/storages/workspace.json`，profile（含模型设置）在 `~/.dsh/profiles/`。Bot 浏览器登录不会落盘：Desktop 只把每个 Bot 的分区放在内存里。
 
-**Back up and restore**
+**备份与恢复**
 
-1. Quit dsh completely (both the Web server and Desktop), so `state.json` is current.
-2. Copy all of `~/.dsh/` (at least `bot/`, `sessions/` and `storages/`). A copy of `bot/` alone loses the chats.
-3. To restore, quit dsh, put the folder back in the same place, then start dsh.
+1. 完全退出 dsh（Web 服务与 Desktop），确保 `state.json` 已写完。
+2. 复制整个 `~/.dsh/`（至少 `bot/`、`sessions/` 与 `storages/`）。只复制 `bot/` 会丢掉对话。
+3. 恢复时先退出 dsh，把目录放回原处，再启动 dsh。
 
-**Move to another computer**: `state.json` has no absolute paths, but dsh's `storages/workspace.json` and the Session folder names contain the workspace's absolute path. If the path is the same on the new computer, copy the folder. If it is different (another user name or system), it is not yet tested whether dsh finds the old Sessions.
+**迁到另一台电脑**：`state.json` 没有绝对路径，但 dsh 的 `storages/workspace.json` 与 Session 目录名含有工作区绝对路径。新电脑路径相同则可直接复制。路径不同（另一用户名或系统）时，dsh 能否找到旧 Session 尚未验证。
 
-**dsh Web and Desktop at the same time**: by default both use the same `~/.dsh`. The dsh that loads the team first takes `bot/state.lock` and can change the team. The other one is read-only: it shows the team and follows changes to the file, but refuses changes (`bot/read-only`, "open in another dsh"), and its Bots cannot start new Sessions. When the first one exits, the other one takes over on its next request. To change the team from both at once, give one of them a different `DSH_HOME` (two separate teams).
+**同时开 dsh Web 与 Desktop**：默认都用同一个 `~/.dsh`。先加载团队的那个 dsh 拿到 `bot/state.lock`，可以改团队。另一个只读：能显示并跟随文件变化，但拒绝改动（`bot/read-only`，「在另一个 dsh 中打开」），其 Bot 也不能开新 Session。第一个退出后，另一个在下次请求时接管。若要两边同时改，给其中一个不同的 `DSH_HOME`（两套独立团队）。
 
-## Development
+## 开发
 
-You need Node 24, pnpm and a deepseek-harness checkout with its dependencies installed, next to this repository (`../deepseek-harness`, or set `DSH_HARNESS`). The Desktop test bench also needs `xvfb-run` and `ffmpeg`. Web screenshots need Chrome or Chromium (`CHROME_BIN`; by default `google-chrome` or `chromium`).
+需要 Node 24、pnpm，以及旁边装好依赖的 deepseek-harness 检出（`../deepseek-harness`，或设 `DSH_HARNESS`）。Desktop 测试台还需要 `xvfb-run` 与 `ffmpeg`。Web 截图需要 Chrome 或 Chromium（`CHROME_BIN`；默认 `google-chrome` 或 `chromium`）。
 
 ```sh
-npm ci                                   # esbuild, for the client build
+npm ci                                   # esbuild，用于客户端构建
 npm run build                            # src/client → client.js
-npm test                                 # unit tests
-npm run lint                             # oxlint from the dsh repository (.oxlintrc.json)
-dev/bench.sh dev 3100 8800 start         # Web test bench: mock model + dsh Web, data in ../.dsh-test-dev
-dev/desktop-linux/desktop.sh dev start   # Desktop test bench: mock model + dsh Desktop in Xvfb
+npm test                                 # 单元测试
+npm run lint                             # 用 dsh 仓库的 oxlint（.oxlintrc.json）
+dev/bench.sh dev 3100 8800 start         # Web 测试台：mock 模型 + dsh Web，数据在 ../.dsh-test-dev
+dev/desktop-linux/desktop.sh dev start   # Desktop 测试台：mock 模型 + Xvfb 里的 dsh Desktop
 CONTEXT_WINDOW=100000 CHECK_RATIO=0.45 dev/bench.sh smoke 3101 8801 reset && node dev/smoke.mjs smoke 3101
-dev/check.sh                             # all checks (see below)
+dev/check.sh                             # 全部检查（见下）
 ```
 
-- `client.js` is built from `src/client/` and committed, so `link:` and Git installs need no build. Do not edit `client.js` by hand; `npm test` checks that it matches the source. After a change in `src/client/`, run `npm run build` and reload the page. After a change in `index.js` or `src/host/`, restart dsh.
-- **Web test bench** `dev/bench.sh <name> <web port> <mock port> [start|stop|reset|status]`: a scripted mock model (`dev/mock-llm.mjs`, no real tokens; its commands are listed at the top of the file) and a dsh Web server. Data goes in `../.dsh-test-<name>/`; `reset` clears the team and Sessions first. The login address with its token is in `../.dsh-test-<name>/web.log`.
-- **Desktop test bench** `dev/desktop-linux/desktop.sh <name> [start|stop|reset|status]`: dsh does not run Desktop on Linux; `launch.mts` runs the unpackaged Desktop in Xvfb. The first start downloads Electron and a Linux runtime (a few minutes). `start` returns when the team shows in a 1400×860 window.
-- **All checks** `dev/check.sh [--skip steps] [--only steps] [--out dir]`: `unit`, `build`, `lint`, `smoke`, `web` (screenshots of the sidebar, a chat, a group, Bot settings, the Bots page and group settings) and `desktop` (the same screenshots, then the Bot browser checks). It stops everything it started. On failure it names the step and its log and exits non-zero. A full run takes about 3 minutes after the first download.
-- **Ports**: every script takes `SLOT=n` (0-9, default 0) so that several people or sessions on one machine do not collide: Web bench `31n0` and mock `88n0`, smoke `31n1` and `88n1`, Desktop mock `88n2`, and so on. A Desktop uses about 1 GB of memory; stop it when you are done.
-- **Real models** (these cost tokens): `dev/steward-eval.mjs` sends hand-written conversation endings through the context steward's own prompt to an OpenAI-compatible route (or, with `--api messages`, an Anthropic Messages route such as DeepSeek's official one) and checks each decision. `dev/llm-tap.mjs <port> <upstream base URL> <log.jsonl> [body dir]` is a logging pass-through for either format: point a provider's `baseURL` at it, and it writes one JSON line per call (steward, checkpoint, handoff note or main turn, the Bot's name, token usage, the answer, and where the request first differs from the same Bot's previous one, which is what a provider's cache can reuse; never headers). With a body dir it also saves every request body. Each file explains its use at the top.
-- **Screenshots**: `dev/ui-shots.mjs` works for both apps (`desktop <dsh repo> <dir> <renderer port>` or `web <dsh repo> <dir> <bench name> <web port>`).
-- `npm test` loads the `@deepseek-ai/*` packages from the deepseek-harness checkout.
+- `client.js` 由 `src/client/` 构建并提交，因此 `link:` 与 Git 安装无需再构建。不要手改 `client.js`；`npm test` 会检查它与源码一致。改 `src/client/` 后跑 `npm run build` 并刷新页面。改 `index.js` 或 `src/host/` 后重启 dsh。
+- **Web 测试台** `dev/bench.sh <name> <web port> <mock port> [start|stop|reset|status]`：脚本化 mock 模型（`dev/mock-llm.mjs`，无真实 token；命令列在文件顶部）与 dsh Web 服务。数据在 `../.dsh-test-<name>/`；`reset` 先清空团队与 Session。带 token 的登录地址在 `../.dsh-test-<name>/web.log`。
+- **Desktop 测试台** `dev/desktop-linux/desktop.sh <name> [start|stop|reset|status]`：dsh 不在 Linux 上跑 Desktop；`launch.mts` 在 Xvfb 里跑未打包 Desktop。首次启动会下载 Electron 与 Linux runtime（数分钟）。`start` 在 1400×860 窗口出现团队后返回。
+- **全部检查** `dev/check.sh [--skip steps] [--only steps] [--out dir]`：`unit`、`build`、`lint`、`smoke`、`web`（侧栏、对话、群聊、Bot 设置、Bot 页与群设置截图）与 `desktop`（同样截图，再加 Bot 浏览器检查）。会停掉它启动的一切。失败时标明步骤与日志并以非零退出。首次下载后完整跑大约 3 分钟。
+- **端口**：每个脚本接受 `SLOT=n`（0–9，默认 0），避免同机多人/多会话冲突：Web 台 `31n0` 与 mock `88n0`，smoke `31n1` 与 `88n1`，Desktop mock `88n2` 等。Desktop 大约占 1 GB 内存；用完请停掉。
+- **真实模型**（会花 token）：`dev/steward-eval.mjs` 把手写对话结尾送进 context steward 自己的提示，经 OpenAI 兼容路由（或 `--api messages` 走 Anthropic Messages，如 DeepSeek 官方）检查每次决定。`dev/llm-tap.mjs <port> <upstream base URL> <log.jsonl> [body dir]` 是两种格式的日志透传：把提供方的 `baseURL` 指过来，每个调用写一行 JSON（steward、检查点、交接笔记或主回合、Bot 名、Token、回答，以及与该 Bot 上一请求首次分叉处——提供方缓存可复用的部分；从不写 headers）。带 body dir 时还会保存每个请求体。用法见各文件顶部。
+- **截图**：`dev/ui-shots.mjs` 两套应用都能用（`desktop <dsh repo> <dir> <renderer port>` 或 `web <dsh repo> <dir> <bench name> <web port>`）。
+- `npm test` 从 deepseek-harness 检出加载 `@deepseek-ai/*` 包。
 
-## Layout
+## 目录结构
 
-| Path | Purpose |
+| 路径 | 用途 |
 |---|---|
-| `index.js` | Host entry: installs the `src/host/` modules in order |
-| `src/host/` | Host: team and storage (`roster`, `store`), tools (`tools`), turns and delivery (`turns`, `delivery`), group chats (`groups`), chat parts, the context steward and the index (`parts`, `steward`, `chat-index`), image text (`images`), secrets (`secrets`), Bot browser (`browser`), the `POST api/bot` route (`channel`) |
-| `src/client/` | Browser source: sidebar, chat header, transcript cells, panels and dialogs, themes, Bot browser panel |
-| `client.js` | Built from `src/client/` by `scripts/build-client.mjs` (esbuild); committed |
-| `web-search.js` | The `auto` search provider; independent of the team code |
-| `test/` | Unit tests and fixtures |
-| `dev/characters.mjs` | Builds the characters (small 3D models traced to outlines) into the `CHARACTERS` table in `src/client/characters.js` |
-| `dev/` | Mock model, test benches, smoke test, Desktop scripts, real-model tools (steward evaluation, logging pass-through) |
+| `index.js` | 宿主入口：按顺序安装 `src/host/` 模块 |
+| `src/host/` | 宿主：团队与存储（`roster`、`store`）、工具（`tools`）、回合与投递（`turns`、`delivery`）、群聊（`groups`）、对话 part、context steward 与索引（`parts`、`steward`、`chat-index`）、图片文字（`images`）、密钥（`secrets`）、Bot 浏览器（`browser`）、`POST api/bot` 路由（`channel`） |
+| `src/client/` | 浏览器源码：侧栏、对话标题、转写单元格、面板与对话框、主题、Bot 浏览器面板 |
+| `client.js` | 由 `scripts/build-client.mjs`（esbuild）从 `src/client/` 构建；已提交 |
+| `web-search.js` | `auto` 搜索提供方；与团队代码独立 |
+| `test/` | 单元测试与夹具 |
+| `dev/characters.mjs` | 把角色（小型 3D 模型描边）构建进 `src/client/characters.js` 的 `CHARACTERS` 表 |
+| `dev/` | mock 模型、测试台、smoke、Desktop 脚本、真实模型工具（steward 评估、日志透传） |
 
-## License
+## 许可
 
 [Apache-2.0](LICENSE)
