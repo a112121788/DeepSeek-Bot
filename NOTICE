@@ -1,5 +1,7 @@
-DS Bot
-Copyright 2026 FeiZhuLulu and the DS Bot contributors
+ebot
+Copyright 2026 a112121788 and the ebot contributors
+
+The original project is https://github.com/FeiZhuLulu/DeepSeek-Bot.
 
 This product is licensed under the Apache License, Version 2.0 (see LICENSE).
 
@@ -10,7 +12,7 @@ Third-party code in this repository
 DeepSeek Harness (https://github.com/deepseek-ai/deepseek-harness)
 MIT License, Copyright (c) 2026 DeepSeek
 
-  - ds-bot/dev/desktop-linux/launch.mts follows the steps of
+  - ebot/dev/desktop-linux/launch.mts follows the steps of
     apps/desktop/scripts/dev.ts in DeepSeek Harness and reuses a few of its
     lines (the release record and the Electron launch arguments). It is a
     developer script for screenshots on Linux and is not in the npm package.
@@ -43,7 +45,7 @@ runs in; they are not bundled. esbuild is a build tool only.
 Projects that gave us ideas (no code copied)
 ==============================================================================
 
-We thank these projects for the designs they published. DS Bot learned from
+We thank these projects for the designs they published. ebot learned from
 their ideas; it does not contain their code.
 
   - AgentMemoryRepo (https://github.com/AgentMemoryRepo/agentmemoryrepo), MIT:

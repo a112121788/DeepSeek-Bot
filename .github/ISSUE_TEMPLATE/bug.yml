@@ -1,5 +1,5 @@
 name: Bug report
-description: Something in DS Bot does not work. Settings → Feedback → Report on GitHub fills most of this in.
+description: Something in ebot does not work. Settings → Feedback → Report on GitHub fills most of this in.
 labels: [bug]
 body:
   - type: markdown
@@ -26,13 +26,13 @@ body:
     id: diagnostics
     attributes:
       label: Diagnostics
-      description: In DS Bot, open Settings → Feedback and select Copy. It lists the versions, the system, the models and the latest errors, with keys and your home folder hidden.
+      description: In ebot, open Settings → Feedback and select Copy. It lists the versions, the system, the models and the latest errors, with keys and your home folder hidden.
     validations:
       required: true
   - type: dropdown
     id: install
     attributes:
-      label: How did you install DS Bot?
+      label: How did you install ebot?
       options:
         - npm
         - Release file

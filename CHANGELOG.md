@@ -1,27 +1,29 @@
 # Changelog
 
-All notable changes to DS Bot are listed here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the versions follow [Semantic Versioning](https://semver.org/). Before 1.0, a minor version can contain breaking changes.
+All notable changes to ebot are listed here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the versions follow [Semantic Versioning](https://semver.org/). Before 1.0, a minor version can contain breaking changes.
 
 ## [Unreleased]
 
 ### Added
 
+- README: install ebot from a local checkout with `dsh plugin add .` in `ebot/`.
 - Settings → Connectors: Gitee beside GitHub. Paste a Gitee personal access token to use Gitee's tools for repositories, issues and pull requests. The token is kept as the `GITEE_TOKEN` secret. `gitee: false` hides it.
 
 ### Changed
 
+- The plugin package, the source folder and the name shown in the interface are `ebot`.
 - Every Bot can change its own name, role, color, model and instructions; only a Main Bot changes other Bots.
-- README and the plugin interface are Chinese-first: root and `ds-bot` `README.md` are Chinese, English lives in `README.en.md`, and the UI defaults to Chinese when DSH has no language set.
+- README and the plugin interface are Chinese-first: root and `ebot` `README.md` are Chinese, English lives in `README.en.md`, and the UI defaults to Chinese when DSH has no language set.
 
 ## [0.1.2] - 2026-10-11
 
 ### Added
 
-- Settings → About DS Bot: the DS Bot and DSH versions, **Check for updates** and the update buttons, and links to the source code, the release notes and the feedback page. A **Star** button opens the GitHub repository and shows its star count.
+- Settings → About ebot: the ebot and DSH versions, **Check for updates** and the update buttons, and links to the source code, the release notes and the feedback page. A **Star** button opens the GitHub repository and shows its star count.
 
 ### Fixed
 
-- The update card offers a DSH update only when a DS Bot release names a verified DSH version. DS Bot 0.1.1 offered DSH `0.2.1-alpha.1`, which was not verified. In DSH Desktop the card shows a DSH update only when the update the app offers is the verified version.
+- The update card offers a DSH update only when a ebot release names a verified DSH version. ebot 0.1.1 offered DSH `0.2.1-alpha.1`, which was not verified. In DSH Desktop the card shows a DSH update only when the update the app offers is the verified version.
 
 ## [0.1.1] - 2026-10-11
 
@@ -30,7 +32,7 @@ Tested with DeepSeek Harness `0.2.1-alpha.1` (DSH Desktop and DSH Web).
 ### Added
 
 - Voice chat uses the local speech recognition of the official DSH Voice Input plugin (SenseVoice) when the plugin is on, and the browser's speech recognition otherwise. When the plugin has no speech model yet, the voice panel opens its settings.
-- The update card also offers DSH updates, but only the DSH version that the newest DS Bot release was verified with (`dsBot.verifiedDsh`). A DSH installed with npm updates in one click; DSH Desktop opens its own update panel.
+- The update card also offers DSH updates, but only the DSH version that the newest ebot release was verified with (`dsBot.verifiedDsh`). A DSH installed with npm updates in one click; DSH Desktop opens its own update panel.
 - Each Bot can pick a thinking level with its model, in the model menu or when the Bot is created. **Default** uses the model's own level.
 - A permission setting in each Bot's details panel: **Read only**, **Workspace** or **Full access**, from the presets DSH offers. The Bot keeps it in its own chat, its group chats and its new conversation parts.
 
@@ -66,22 +68,22 @@ The first public preview. Tested with DeepSeek Harness `0.2.1-alpha.1` (DSH Desk
 - Avatar animation in three levels (Settings → Bots → Animation): **Quiet**, **Normal** (the default) and **Lively**. Panels, menus and controls move on springs.
 - Settings with pages for General, Bots, Group chats, Connectors, Scheduled tasks, Usage, Secrets and Feedback.
 - The interface follows the DSH language (English or Chinese).
-- **Classic Agent mode** (Settings → General) gives the window back to the native DSH interface; the **DS Bot** button at the bottom of the sidebar brings the team view back.
-- Settings → Feedback: the DS Bot and DSH versions, the system and the recent errors, with **Report on GitHub**, **Copy**, **Download** and **Clear**. Keys, tokens, saved secrets and the home folder are removed from the text. Errors are also written to `<home>/logs/diagnostics.jsonl` (`diagnosticsFile: false` keeps them in memory only), and a failed request shows a short notice with a **Details** link.
-- Update checks: DS Bot looks for a newer release where it was installed from (the npm registry, or GitHub for a versioned git install) and shows a cloud button at the sidebar's top right when one exists. One click installs it; the new version runs from the next DSH start. `updateCheck: false` turns the checks off.
+- **Classic Agent mode** (Settings → General) gives the window back to the native DSH interface; the **ebot** button at the bottom of the sidebar brings the team view back.
+- Settings → Feedback: the ebot and DSH versions, the system and the recent errors, with **Report on GitHub**, **Copy**, **Download** and **Clear**. Keys, tokens, saved secrets and the home folder are removed from the text. Errors are also written to `<home>/logs/diagnostics.jsonl` (`diagnosticsFile: false` keeps them in memory only), and a failed request shows a short notice with a **Details** link.
+- Update checks: ebot looks for a newer release where it was installed from (the npm registry, or GitHub for a versioned git install) and shows a cloud button at the sidebar's top right when one exists. One click installs it; the new version runs from the next DSH start. `updateCheck: false` turns the checks off.
 - One writer per team: when DSH Web and DSH Desktop share a DSH home, the second one opens the team read-only, says why, and takes over when the first one quits.
 
-If you used the legacy `dsh-bot` package, remove it before you install `ds-bot`. The team data stays in `<DSH_HOME>/bot`, and the theme, Bot colors and browser settings move over the first time DS Bot opens.
+If you used the legacy `dsh-bot` package, remove it before you install `ebot`. The team data stays in `<DSH_HOME>/bot`. Browser settings saved under the old name do not move over.
 
 ### Known limitations
 
 - Tested with DSH `0.2.1-alpha.1`, mainly on Linux and in DSH Web. DSH is an alpha, and a newer DSH can break the plugin.
-- The Bot browser is in DSH Desktop only, and Bots can only read pages ([Bot browser](ds-bot/README.en.md#bot-browser)).
-- Secrets are stored without encryption, and only exact copies of a value are hidden ([Secrets](ds-bot/README.en.md#secrets)).
-- Only one DSH can change a team at a time; a second DSH on the same DSH home opens it read-only ([Data and backups](ds-bot/README.en.md#data-and-backups)).
+- The Bot browser is in DSH Desktop only, and Bots can only read pages ([Bot browser](ebot/README.en.md#bot-browser)).
+- Secrets are stored without encryption, and only exact copies of a value are hidden ([Secrets](ebot/README.en.md#secrets)).
+- Only one DSH can change a team at a time; a second DSH on the same DSH home opens it read-only ([Data and backups](ebot/README.en.md#data-and-backups)).
 - Group chats use many tokens: each member reads the group and answers in turn.
 
-[Unreleased]: https://github.com/FeiZhuLulu/DeepSeek-Bot/compare/v0.1.2...HEAD
-[0.1.2]: https://github.com/FeiZhuLulu/DeepSeek-Bot/compare/v0.1.1...v0.1.2
-[0.1.1]: https://github.com/FeiZhuLulu/DeepSeek-Bot/compare/v0.1.0...v0.1.1
-[0.1.0]: https://github.com/FeiZhuLulu/DeepSeek-Bot/releases/tag/v0.1.0
+[Unreleased]: https://github.com/a112121788/DeepSeek-Bot/compare/v0.1.2...HEAD
+[0.1.2]: https://github.com/a112121788/DeepSeek-Bot/compare/v0.1.1...v0.1.2
+[0.1.1]: https://github.com/a112121788/DeepSeek-Bot/compare/v0.1.0...v0.1.1
+[0.1.0]: https://github.com/a112121788/DeepSeek-Bot/releases/tag/v0.1.0

@@ -1,14 +1,14 @@
-# Contributing to DS Bot
+# Contributing to ebot
 
 Thank you for helping. This file explains how to set up the plugin, how to test a change and which rules a change must follow. For what the plugin does and how users install it, see [README.md](README.md).
 
 ## Pull requests
 
-Thank you for your interest in improving DS Bot. The project is still changing quickly, so we are not accepting pull requests for now. If you find a problem or have an idea, please open an issue (see [Report a problem](#report-a-problem)). We hope to open pull requests again when the project is stable. Thank you for your understanding.
+Thank you for your interest in improving ebot. The project is still changing quickly, so we are not accepting pull requests for now. If you find a problem or have an idea, please open an issue (see [Report a problem](#report-a-problem)). We hope to open pull requests again when the project is stable. Thank you for your understanding.
 
 ## The rules that matter most
 
-1. **DS Bot is a DSH plugin, and only a plugin.** Do not patch DeepSeek Harness, and do not depend on files inside a DSH install. Use the plugin APIs that DSH documents (Cordis services, the plugin client entry, profile patches). When a feature needs something that DSH does not offer, open an issue here first; the fix can belong in DSH.
+1. **ebot is a DSH plugin, and only a plugin.** Do not patch DeepSeek Harness, and do not depend on files inside a DSH install. Use the plugin APIs that DSH documents (Cordis services, the plugin client entry, profile patches). When a feature needs something that DSH does not offer, open an issue here first; the fix can belong in DSH.
 2. **Every Bot is a DSH Session.** Bot work runs through the normal DSH agent loop, tools and model routes. Do not add a second agent runtime.
 3. **No real secrets anywhere.** Do not commit API keys, tokens, cookies, `DSH_HOME` folders, logs or screenshots with personal data. The tests and the test bench use a scripted mock model and need no key.
 4. **Only original material.** Do not copy code, text, icons, logos or other graphics from other products or websites. Code under a license compatible with Apache 2.0 is the only exception: say where it comes from and add its notice to a `NOTICE` file.
@@ -23,8 +23,8 @@ You need:
 - A checkout of DeepSeek Harness at the DSH version that the plugin is tested with. The unit tests and the test bench load the `@deepseek-ai/*` packages from it.
 
 ```sh
-git clone https://github.com/FeiZhuLulu/DeepSeek-Bot.git ds-bot-repo
-cd ds-bot-repo
+git clone https://github.com/a112121788/DeepSeek-Bot.git ebot-repo
+cd ebot-repo
 
 # DeepSeek Harness, next to the plugin folder (this folder is ignored by Git).
 git clone https://github.com/deepseek-ai/deepseek-harness.git
@@ -32,29 +32,29 @@ git -C deepseek-harness checkout dsh-v0.2.1-alpha.1
 (cd deepseek-harness && pnpm install)
 
 # The plugin's own build tool (esbuild only).
-cd ds-bot
+cd ebot
 npm ci
 ```
 
 If your DeepSeek Harness checkout is somewhere else, set `DSH_HARNESS` to its path for the tests and the test bench.
 
-The `@deepseek-ai/*` packages are peer dependencies: in a real install, the DSH profile supplies them. `ds-bot/.npmrc` keeps npm from installing them into the plugin folder.
+The `@deepseek-ai/*` packages are peer dependencies: in a real install, the DSH profile supplies them. `ebot/.npmrc` keeps npm from installing them into the plugin folder.
 
 ## Layout
 
 | Path | What it is |
 |---|---|
-| `ds-bot/index.js`, `ds-bot/src/host/` | The server side: Bot roster and store, tools, turns and delivery, group chats, conversation parts and the search index, images, the Bot browser bridge, the `api/bot` channel |
-| `ds-bot/src/client/` | The browser side: sidebar, chat, panels and dialogs, themes, characters, the Bot browser panel |
-| `ds-bot/client.js` | Generated from `src/client/` by `scripts/build-client.mjs`. It is committed, so that Git installs need no build step |
-| `ds-bot/web-search.js` | The `auto` web-search provider. It does not depend on the Bot team code |
-| `ds-bot/cordis.patch.yml` | The profile patch that the plugin brings |
-| `ds-bot/test/` | Unit tests and fixtures |
-| `ds-bot/dev/` | The mock model, the test bench, the smoke test, the character generator, the Desktop scripts for Linux, and two tools for real models: the steward evaluation and a logging pass-through |
+| `ebot/index.js`, `ebot/src/host/` | The server side: Bot roster and store, tools, turns and delivery, group chats, conversation parts and the search index, images, the Bot browser bridge, the `api/bot` channel |
+| `ebot/src/client/` | The browser side: sidebar, chat, panels and dialogs, themes, characters, the Bot browser panel |
+| `ebot/client.js` | Generated from `src/client/` by `scripts/build-client.mjs`. It is committed, so that Git installs need no build step |
+| `ebot/web-search.js` | The `auto` web-search provider. It does not depend on the Bot team code |
+| `ebot/cordis.patch.yml` | The profile patch that the plugin brings |
+| `ebot/test/` | Unit tests and fixtures |
+| `ebot/dev/` | The mock model, the test bench, the smoke test, the character generator, the Desktop scripts for Linux, and two tools for real models: the steward evaluation and a logging pass-through |
 
 ## Test a change
 
-Run these in `ds-bot/`:
+Run these in `ebot/`:
 
 ```sh
 npm run build                          # src/client → client.js
@@ -91,18 +91,18 @@ For a change to the Bot browser, check it in DSH Desktop. On Linux, the scripts 
 
 ## Report a problem
 
-The easiest way is from DS Bot itself: open **Settings → Feedback**, write what happened and select **Report on GitHub**. It opens a new issue with the DS Bot and DSH versions, your system, the models and the recent errors already filled in. **Copy** puts the same text on the clipboard, and **Download** saves the full error log (`<DSH_HOME>/bot/logs/diagnostics.jsonl`).
+The easiest way is from ebot itself: open **Settings → Feedback**, write what happened and select **Report on GitHub**. It opens a new issue with the ebot and DSH versions, your system, the models and the recent errors already filled in. **Copy** puts the same text on the clipboard, and **Download** saves the full error log (`<DSH_HOME>/bot/logs/diagnostics.jsonl`).
 
 If you open an issue by hand, include:
 
 - The DSH version (DSH Desktop or `@deepseek-ai/dsh`), your operating system, and whether you use DSH Desktop or DSH Web.
-- How you installed DS Bot (npm, release file, Git address or command line) and its version.
+- How you installed ebot (npm, release file, Git address or command line) and its version.
 - What you did, what you expected and what happened, with the exact error text.
 
-DS Bot removes API keys, tokens, saved secrets and your home folder from its diagnostics. Read the text before you post it, and remove personal data from screenshots.
+ebot removes API keys, tokens, saved secrets and your home folder from its diagnostics. Read the text before you post it, and remove personal data from screenshots.
 
 For a security problem, do not open a public issue. Use **Report a vulnerability** on the repository's **Security** tab.
 
 ## License
 
-DS Bot is licensed under the [Apache License 2.0](LICENSE). When you submit a contribution, you agree that it is licensed under the same license, as section 5 of the license says.
+ebot is licensed under the [Apache License 2.0](LICENSE). When you submit a contribution, you agree that it is licensed under the same license, as section 5 of the license says.
