@@ -53,7 +53,7 @@ ebot 是 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness)（d
 pnpm -s dsh --profile web --no-open
 ```
 
-团队第一次打开时，插件会创建一个叫 Chief 的主 Bot。
+团队第一次打开时，插件会创建一个叫「总管」的主 Bot，角色是「幕僚长」。
 
 **从旧包 `dsh-bot` 升级**：更早的构建用包名 `dsh-bot`。先从 profile 去掉 `dsh-bot` 再加 `ebot`，因为两者都用插件 id `bot`。团队、对话与密钥仍在原处（见[数据与备份](#数据与备份)）。浏览器里保存的设置不会迁过来。
 

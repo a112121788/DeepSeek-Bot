@@ -46,8 +46,8 @@ export function apply(ctx, config = {}) {
     home,
     statePath: join(home, 'state.json'),
     defaults: {
-      mainName: config.mainName ?? 'Chief',
-      mainRole: config.mainRole ?? 'Chief of Staff',
+      mainName: config.mainName ?? '总管',
+      mainRole: config.mainRole ?? '幕僚长',
     },
   }
   for (const module of MODULES) module.install(rt)

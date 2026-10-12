@@ -53,7 +53,7 @@ Run `pnpm install` in the profile folder, then start dsh from the deepseek-harne
 pnpm -s dsh --profile web --no-open
 ```
 
-The first time the team opens, the plugin creates a Main Bot called Chief.
+The first time the team opens, the plugin creates a Main Bot named 总管, with the role 幕僚长.
 
 **Upgrading from the legacy `dsh-bot` package**: earlier builds used the package name `dsh-bot`. Remove `dsh-bot` from the profile before you add `ebot`, because both use the plugin id `bot`. Your team, chats and secrets stay where they are (see [Data and backups](#data-and-backups)). Browser settings saved in the browser do not move over.
 

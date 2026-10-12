@@ -65,7 +65,7 @@ npx @deepseek-ai/dsh@0.2.1-alpha.1 plugin --profile web add .
 
 ### Main bot
 
-这个 bot 作为你的 chief，它拥有非常高的权限，可以管理其他 bot 和群聊。第一次进入 ebot 时，默认会有一个 main bot 叫 Chief。你可以直接和它对话，让它引导你完成配置。
+这个 bot 是你的总管，角色是幕僚长。它拥有非常高的权限，可以管理其他 bot 和群聊。第一次进入 ebot 时，默认会有一个 main bot 叫「总管」。你可以直接和它对话，让它引导你完成配置。
 
 总之，有问题，找 main bot。
 

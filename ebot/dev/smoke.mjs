@@ -160,15 +160,15 @@ const expect = (condition, message) => (condition ? undefined : message)
 const saidText = (calls, pattern) => calls.some(call => (call.out ?? []).some(block => block.type === 'text' && pattern.test(block.text)))
 
 const send = (sessionId, text) => api('send', { sessionId, text })
-const chief = () => botNamed('Chief')
+const chief = () => botNamed('总管')
 
 let models = []
 await step('bootstrap: Chief waits for a model', () => api('state'), (value, calls) => {
   const current = state()
   const bots = Object.values(current.bots)
   models = value.models ?? []
-  return expect(bots.length === 1 && bots[0].name === 'Chief' && current.mainBotIds[0] === bots[0].id, 'expected one Main Bot named Chief')
-    ?? expect(bots[0].model === undefined && bots[0].kickoff !== undefined, 'Chief should hold its greeting until a model is picked')
+  return expect(bots.length === 1 && bots[0].name === '总管' && current.mainBotIds[0] === bots[0].id, 'expected one Main Bot named 总管')
+    ?? expect(bots[0].model === undefined && bots[0].kickoff !== undefined, 'the Main Bot should hold its greeting until a model is picked')
     ?? expect(value.bots[0].waiting === true, 'the view should show Chief as waiting')
     ?? expect(calls.length === 0, `Chief called the model ${calls.length} times before it had one`)
     ?? expect(models.length > 0, 'no models listed for the model card')
@@ -218,7 +218,7 @@ await step('admin calls everyone', () => send(roomNamed('研发群').id, '讨论
 
 await step('Chief posts to the group', () => send(chief().id, '群发 研发群: 今天下午开会'), () => {
   const log = roomNamed('研发群').log ?? []
-  return expect(log.some(line => line.who === 'Chief' && line.text.includes('今天下午开会')), 'post missing from the group log')
+  return expect(log.some(line => line.who === '总管' && line.text.includes('今天下午开会')), 'post missing from the group log')
 })
 
 await step('Chief sets the group notice', () => send(chief().id, '改群 研发群 公告: 周五交付'), () => expect(roomNamed('研发群').notice === '周五交付', 'notice not set'))

@@ -3,7 +3,7 @@
 // webview and time it, check what it reads, and ask the mock model "看网页结构" so the
 // chat shows what read_browser returned. Writes screenshots and each read (JSON and the
 // tool text) to <out-dir>.
-//   node read-check.mjs <dsh-repo> <out-dir> [cdp-port=9422] [pages-port=8833] [bot=Chief] [--offline]
+//   node read-check.mjs <dsh-repo> <out-dir> [cdp-port=9422] [pages-port=8833] [bot=总管] [--offline]
 // Size the window first with window-size.mjs. Set SHOT_DISPLAY (the Xvfb display) and
 // XAUTHORITY to grab the screen: a CDP screenshot draws webview guests at a wrong offset.
 import { execFileSync } from 'node:child_process'
@@ -17,7 +17,7 @@ import { READ_PAGE_SCRIPT } from '../../src/client/read-page.js'
 const { pageText } = await import('../../src/host/browser.js')
 
 const offline = process.argv.includes('--offline')
-const [repo, outDir, port = '9422', pagesPort = '8833', botName = 'Chief'] = process.argv.slice(2).filter(arg => arg !== '--offline')
+const [repo, outDir, port = '9422', pagesPort = '8833', botName = '总管'] = process.argv.slice(2).filter(arg => arg !== '--offline')
 if (!repo || !outDir) {
   console.error('usage: node read-check.mjs <dsh-repo> <out-dir> [cdp-port] [pages-port] [bot] [--offline]')
   process.exit(2)

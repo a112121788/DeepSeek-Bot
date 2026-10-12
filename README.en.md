@@ -65,7 +65,7 @@ Bots also have memory. A bot remembers what you like and uses it in later work. 
 
 ### Main bot
 
-The main bot is your chief. It has very high rights: it manages the other bots and the group chats. The first time you open ebot, there is already a main bot called Chief. Talk to it, and it walks you through the setup.
+The main bot is your 总管, with the role 幕僚长. It has very high rights: it manages the other bots and the group chats. The first time you open ebot, there is already a main bot named 总管. Talk to it, and it walks you through the setup.
 
 In short: have a question? Ask the main bot.
 

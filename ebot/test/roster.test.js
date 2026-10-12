@@ -174,7 +174,8 @@ test('a new team starts with a DeepSeek-blue whale as its Main Bot', async (t) =
   const team = (await call('state', {})).value
   assert.equal(team.mainBotIds.length, 1)
   const main = team.bots.find(bot => bot.id === team.mainBotId)
-  assert.equal(main.name, 'Chief')
+  assert.equal(main.name, '总管')
+  assert.equal(main.role, '幕僚长')
   assert.equal(main.color, 'deepseek')
   assert.deepEqual(main.avatar, { shape: 'whale' })
 

@@ -12,6 +12,7 @@ All notable changes to ebot are listed here. The format follows [Keep a Changelo
 ### Changed
 
 - The plugin package, the source folder and the name shown in the interface are `ebot`.
+- A new team starts with a Main Bot named 总管, role 幕僚长. Existing teams keep their saved names.
 - Every Bot can change its own name, role, color, model and instructions; only a Main Bot changes other Bots.
 - README and the plugin interface are Chinese-first: root and `ebot` `README.md` are Chinese, English lives in `README.en.md`, and the UI defaults to Chinese when DSH has no language set.
 
