@@ -7,6 +7,10 @@ All notable changes to ebot are listed here. The format follows [Keep a Changelo
 ### Added
 
 - README: install ebot from a local checkout with `dsh plugin add .` in `ebot/`.
+
+### Changed
+
+- Package version is `0.1.3`. The git tag and the GitHub release are not cut yet, so these notes stay under `[Unreleased]`. Git install examples name `v0.1.3`.
 - Settings → Connectors: Gitee beside GitHub. Paste a Gitee personal access token to use Gitee's tools for repositories, issues and pull requests. The token is kept as the `GITEE_TOKEN` secret. `gitee: false` hides it.
 
 ### Changed

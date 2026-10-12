@@ -35,7 +35,7 @@ Tested with dsh `0.2.1-alpha.1` (Web and Desktop) on Linux.
 
 The [project page](../README.en.md#install) has the full steps for dsh Desktop and dsh Web. In short:
 
-- dsh Desktop: Settings → Plugins → add `ebot` (npm), a `.tgz` file, or `github:a112121788/DeepSeek-Bot#v0.1.2&path:/ebot`.
+- dsh Desktop: Settings → Plugins → add `ebot` (npm), a `.tgz` file, or `github:a112121788/DeepSeek-Bot#v0.1.3&path:/ebot`.
 - Command line: `dsh plugin --profile desktop add ebot` (or `--profile web`).
 
 To work on the plugin from a checkout, add it to a dsh profile as a linked dependency and a bundle:

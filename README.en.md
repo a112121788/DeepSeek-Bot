@@ -25,7 +25,7 @@ First install DSH and set up at least one model in it. ebot uses the models from
 2. In **Package name or address**, enter `ebot`. In mainland China, set **Registry** to **Mainland China mirror**.
 3. Select **Install**, then **Enable now**. If DSH says the change takes effect at the next start, quit DSH completely and open it again.
 
-If npm is not reachable, in step 2 you can also enter the full path of `ebot-0.1.2.tgz` downloaded from [Releases](https://github.com/a112121788/DeepSeek-Bot/releases), or `github:a112121788/DeepSeek-Bot#v0.1.2&path:/ebot` (needs Git).
+If npm is not reachable, in step 2 you can also enter the full path of `ebot-0.1.3.tgz` downloaded from [Releases](https://github.com/a112121788/DeepSeek-Bot/releases), or `github:a112121788/DeepSeek-Bot#v0.1.3&path:/ebot` (needs Git).
 
 **DSH Web (Windows, macOS, Linux)**
 

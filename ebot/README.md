@@ -35,7 +35,7 @@ ebot 是 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness)（d
 
 [项目主页](../README.md#安装)有 dsh Desktop 与 dsh Web 的完整步骤。简要如下：
 
-- dsh Desktop：设置 → 插件 → 添加 `ebot`（npm）、`.tgz` 文件，或 `github:a112121788/DeepSeek-Bot#v0.1.2&path:/ebot`。
+- dsh Desktop：设置 → 插件 → 添加 `ebot`（npm）、`.tgz` 文件，或 `github:a112121788/DeepSeek-Bot#v0.1.3&path:/ebot`。
 - 命令行：`dsh plugin --profile desktop add ebot`（或 `--profile web`）。
 
 从检出目录开发时，把插件加到 dsh profile 里作为链接依赖和 bundle：
