@@ -4,6 +4,10 @@ All notable changes to DS Bot are listed here. The format follows [Keep a Change
 
 ## [Unreleased]
 
+### Added
+
+- Settings → Connectors: Gitee beside GitHub. Paste a Gitee personal access token to use Gitee's tools for repositories, issues and pull requests. The token is kept as the `GITEE_TOKEN` secret. `gitee: false` hides it.
+
 ### Changed
 
 - Every Bot can change its own name, role, color, model and instructions; only a Main Bot changes other Bots.
