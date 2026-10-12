@@ -1,6 +1,7 @@
 // Interface copy follows the DSH language. Keys are the English text; `zh` maps them.
-// Copy is looked up at render time and every slot outlet re-renders on a language
-// switch, so nothing caches a translated string.
+// Without a locale service, copy defaults to Chinese. Copy is looked up at render
+// time and every slot outlet re-renders on a language switch, so nothing caches a
+// translated string.
 
 export const NAMESPACE = 'ds-bot'
 
@@ -846,7 +847,7 @@ const fill = (text, params) => (params
 let service = null
 let bound = null
 
-// `locale` is the DSH locale service; without one, copy stays English.
+// `locale` is the DSH locale service; without one, copy defaults to Chinese.
 export function installLocale(locale) {
   if (!locale || typeof locale.register !== 'function' || typeof locale.bind !== 'function') return () => {}
   service = locale
@@ -859,7 +860,8 @@ export function installLocale(locale) {
 }
 
 export function t(key, params) {
-  return bound ? bound(key, params) : fill(key, params)
+  if (bound) return bound(key, params)
+  return fill(Object.hasOwn(ZH, key) ? ZH[key] : key, params)
 }
 
 // A message from the host, in the interface language.
@@ -872,10 +874,10 @@ export function hostText(message) {
   return message
 }
 
-// The active DSH language tag, for dates and times.
+// The active DSH language tag, for dates and times. Chinese when unset.
 export function language() {
   const active = service?.getLocale?.().active
-  return typeof active === 'string' ? active : 'en'
+  return typeof active === 'string' ? active : 'zh'
 }
 
 export const dateLocale = () => (language().startsWith('zh') ? 'zh-CN' : 'en-US')

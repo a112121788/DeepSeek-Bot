@@ -893,7 +893,8 @@ function installLocale(locale) {
   };
 }
 function t(key, params) {
-  return bound ? bound(key, params) : fill(key, params);
+  if (bound) return bound(key, params);
+  return fill(Object.hasOwn(ZH, key) ? ZH[key] : key, params);
 }
 function hostText(message) {
   if (!language().startsWith("zh")) return message;
@@ -905,7 +906,7 @@ function hostText(message) {
 }
 function language() {
   const active = service?.getLocale?.().active;
-  return typeof active === "string" ? active : "en";
+  return typeof active === "string" ? active : "zh";
 }
 var dateLocale = () => language().startsWith("zh") ? "zh-CN" : "en-US";
 var DICTIONARY = { zh: ZH };

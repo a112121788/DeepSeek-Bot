@@ -11,6 +11,7 @@ All notable changes to DS Bot are listed here. The format follows [Keep a Change
 ### Changed
 
 - Every Bot can change its own name, role, color, model and instructions; only a Main Bot changes other Bots.
+- README and the plugin interface are Chinese-first: `README.md` is Chinese, English lives in `README.en.md`, and the UI defaults to Chinese when DSH has no language set.
 
 ## [0.1.2] - 2026-10-11
 

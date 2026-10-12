@@ -28,10 +28,12 @@ test('every literal the client translates has a Chinese entry', () => {
   assert.deepEqual(missing, [])
 })
 
-test('copy follows the DSH language and stays English without a locale service', () => {
-  assert.equal(t('Message {name}', { name: 'Chief' }), 'Message Chief')
-  assert.equal(language(), 'en')
-  const off = installLocale(fakeLocale('zh'))
+test('copy follows the DSH language and defaults to Chinese without a locale service', () => {
+  assert.equal(language(), 'zh')
+  assert.equal(t('Message {name}', { name: 'Chief' }), '给 Chief 发消息')
+  assert.equal(t('Model'), '模型')
+  assert.equal(hostText('A Bot named Writer already exists'), '已经有叫 Writer 的 Bot 了')
+  const offZh = installLocale(fakeLocale('zh'))
   try {
     assert.equal(language(), 'zh')
     assert.equal(t('Message {name}', { name: 'Chief' }), '给 Chief 发消息')
@@ -44,8 +46,19 @@ test('copy follows the DSH language and stays English without a locale service',
     assert.equal(hostText("Writer's memory's MEMORY.md would have 4100 of its 4000 characters. Make room first: move details into a topic."), '主记忆会超过 4000 个字符的上限，请先删掉一些')
     assert.equal(hostText('There is no entry 9.'), '没有第 9 条')
   } finally {
-    off()
+    offZh()
   }
-  assert.equal(t('Model'), 'Model')
-  assert.equal(hostText('A Bot named Writer already exists'), 'A Bot named Writer already exists')
+  assert.equal(language(), 'zh')
+  assert.equal(t('Model'), '模型')
+  const offEn = installLocale(fakeLocale('en'))
+  try {
+    assert.equal(language(), 'en')
+    assert.equal(t('Model'), 'Model')
+    assert.equal(t('Message {name}', { name: 'Chief' }), 'Message Chief')
+    assert.equal(hostText('A Bot named Writer already exists'), 'A Bot named Writer already exists')
+  } finally {
+    offEn()
+  }
+  assert.equal(language(), 'zh')
+  assert.equal(t('Model'), '模型')
 })

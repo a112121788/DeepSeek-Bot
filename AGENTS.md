@@ -47,4 +47,4 @@ A change is done when `npm test` and the `--check` pass. Run the smoke test as w
 - Follow the code around your change. Keep functions small and names plain.
 - Write a comment only when the reason is not clear from the code: a hidden constraint, an invariant, a workaround. Do not describe what the code does.
 - Commit messages in English, imperative subject, the reason in the body. Keep commits small.
-- User-facing text in the plugin is English. Keep the README and README.zh.md in step when you change one of them.
+- User-facing plugin copy keys stay English; Chinese is the registered translation and the default when DSH has no language. Keep README.md (Chinese) and README.en.md in step when you change one of them.
