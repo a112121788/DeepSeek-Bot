@@ -37,6 +37,34 @@ MIT License, Copyright (c) 2026 DeepSeek
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
   SOFTWARE.
 
+Simple Icons (https://github.com/simple-icons/simple-icons)
+CC0 1.0 Universal (a public domain dedication)
+
+  - The Gitee connector mark in ebot/src/client/connectors.js traces the
+    official Gitee logo as published by Simple Icons
+    (https://simpleicons.org/?q=gitee). Simple Icons dedicates its
+    brand-icon SVG paths to the public domain through CC0; the Gitee name
+    and logo remain trademarks of Gitee (OSChina), used here only to name
+    the service the connector reaches.
+
+  Full license text:
+
+  CC0 1.0 Universal
+
+  Statement of Purpose: The laws of most jurisdictions throughout the world
+  automatically confer exclusive Copyright and Related Rights (defined below)
+  upon the creator and subsequent owner(s) (each and all, an "owner") of an
+  original work of authorship and/or a database (each, a "Work").
+
+  Certain owners wish to permanently relinquish those rights to a Work for
+  the benefit of the public as a whole. To the extent possible under law,
+  each owner irrevocably grants to the public a worldwide, royalty-free,
+  perpetual, irrevocable, non-exclusive, fully transferable and sublicensable
+  license to reproduce, prepare Derivative Works of, publicly display,
+  publicly perform, distribute and License the Work, and to authorize others
+  to do the foregoing. The full text is at
+  https://creativecommons.org/publicdomain/zero/1.0/legalcode.
+
 No other third-party code is copied into this repository. At run time the
 plugin uses the @deepseek-ai/* packages of the DeepSeek Harness install it
 runs in; they are not bundled. esbuild is a build tool only.
