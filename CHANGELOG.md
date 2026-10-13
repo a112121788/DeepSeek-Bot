@@ -16,8 +16,11 @@ All notable changes to ebot are listed here. The format follows [Keep a Changelo
 
 - Package version is `0.2.0`. Git install examples name `v0.2.0`.
 - Settings → Connectors: Gitee beside GitHub. Paste a Gitee personal access token to use Gitee's tools for repositories, issues and pull requests. The token is kept as the `GITEE_TOKEN` secret. `gitee: false` hides it.
+- Coming from the upstream `ds-bot` plugin? Remove it before you install `ebot`. The team data stays in `<DSH_HOME>/bot`; browser settings saved under the old name do not move over.
 
 ## [0.1.3] - 2026-10-12
+
+Upstream DS Bot's release, which ebot merged in 0.2.0. ebot's own version history starts at 0.2.0.
 
 ### Added
 

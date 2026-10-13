@@ -17,33 +17,19 @@
 | Risk | 推送与发布会公开内容；npm 需要账号凭据；GitHub Release 建在 a112121788/DeepSeek-Bot，Gitee 推送到 eclouddev/ebot，两处远端都要更新 |
 | Rollback | 远端删标签、删 Release、npm `unpublish`（有时限）；本地删标签后把小节移回 `[Unreleased]` |
 
-### `RL-002` - 发布 ebot 0.2.0：changelog 收口、版本号与标签
-
-| 字段 | 内容 |
-|---|---|
-| 状态 | ready |
-| 优先级 | P0 |
-| Outcome | 用户从 Releases 安装的 `ebot-0.2.0.tgz`、git 安装的 `#v0.2.0` 与 npm 版本三处同号；`[Unreleased]` 收成带日期的 `0.2.0` 小节 |
-| Scope | `CHANGELOG.md`：`[Unreleased]` 收进 `[0.2.0] - <发布日期>`；补一条 Added「包更名为 ebot、上游 0.1.1–0.1.3 并入、Gitee 连接器」已在现有条目里，如缺再补；版本链接区加 `[0.2.0]: …/compare/v0.1.3...v0.2.0`。`ebot/package.json`、`ebot/package-lock.json` 的版本改为 `0.2.0`。根 `README.md`/`README.en.md` 与 `ebot/README.md`/`README.en.md` 的安装示例 `0.1.3`/`v0.1.3` 全部改为 `0.2.0`/`v0.2.0`。合并后跑 `npm test`。**发布动作**：`git tag v0.2.0`、推送标签、GitHub Release、`npm publish`，只在用户明确要求时执行。非目标：改产品代码 |
-| Evidence | 本轮事实核对：本地 `v0.1.0`–`v0.1.3` 全是上游标签（随 `ded4110` 带入）；CHANGELOG 已有上游 `[0.1.3]` 小节（`v0.1.2...v0.1.3`，指向 Fei2411）；`[Unreleased]` compare 链接已写 `v0.1.3...HEAD`；`[Unreleased]` 含包名迁移与上游整体并入，属 minor 级变更。用户请求「规划新版本」并把下一版定为 0.2.0 |
-| Acceptance | `node -p "require('./ebot/package.json').version"` 打印 `0.2.0`；`grep -rn "0\.1\.3" README*.md ebot/README*.md` 只剩上游历史小节引用；`npm test` 通过；`git tag` 有 `v0.2.0` 且指向 CHANGELOG 小节所在提交（仅当用户要求发布） |
-| Risk | 标签先于验证会把未核对的变更标成已发布；`v0.1.3` 已被上游占用，重复使用会让两处发布混淆；npm 发布需要账号凭据 |
-| Rollback | 删掉未推送的 `v0.2.0` 标签，把 `[0.2.0]` 小节移回 `[Unreleased]`，版本号改回 `0.1.3`；已推送的标签与 Release 需在远端删除 |
-
-### `RL-003` - 清理 CHANGELOG 与 README 的发布漂移
-
-| 字段 | 内容 |
-|---|---|
-| 状态 | ready |
-| 优先级 | P1 |
-| Outcome | 读者在 CHANGELOG 里看到一致的版本叙事：上游小节指向 Fei2411 仓库、ebot 小节指向 a112121788 仓库；README.zh.md 的安装说明与实际安装命令一致 |
-| Scope | `CHANGELOG.md` 末尾链接区：给 `[0.1.2]` 及更早小节补 Fei2411 地址（`[0.1.2]: https://github.com/Fei2411/DeepSeek-Bot/compare/...`）；`[0.1.3]` 保持指向上游发布（跟随 `5efb408`），或在 ebot 首个版本小节处注明「0.1.3 及更早为上游 DS Bot 的发布」。`README.zh.md` 第 28 行按 `README.md` 的 ebot 事实重写（`ebot-0.2.0.tgz`、`github:a112121788/DeepSeek-Bot#v0.2.0&path:/ebot`），并同步 `README.en.md`。非目标：改产品代码、改 spec |
-| Evidence | 本轮事实核对：`README.zh.md:28` 仍是上游文案；CHANGELOG 链接区 `[0.1.x]` 小节缺仓库前缀或指向上游，与 ebot 仓库叙事混用 |
-| Acceptance | `grep -n "compare/v0.1" CHANGELOG.md` 的每一行都带正确的仓库地址；`README.zh.md` 与 `README.md` 的安装示例同号且都指向 a112121788 仓库 |
-| Risk | 改错历史小节链接会让老版本下载地址失效；只改 ebot 仓库侧的引用，不动 Fei2411 上游仓库本身 |
-| Rollback | 还原 `CHANGELOG.md` 与两个 README 的对应段落 |
-
 ## Done
+
+### `RL-003` - 清理 CHANGELOG 与 README 的发布漂移（2026-10-13）
+
+| 字段 | 内容 |
+|---|---|
+| 状态 | done |
+| Outcome | 读者在仓库里看到一致的版本叙事：ebot 的中文文档只有根 `README.md`，上游 `[0.1.3]` 小节标明来源，从 `ds-bot` 迁移的读者在 `0.2.0` 小节就能看到迁移提示 |
+| Scope | 与原计划两处偏差：① `README.zh.md` 整个文件是上游 DS Bot 原样残留（`git diff 5efb408` 无差异，装 `ds-bot`、默认名 Chief），零引用；ebot 的双语结构是 `README.md`（中）↔ `README.en.md`（英），只重写第 28 行会留下自相矛盾的上游文档，故删除整个文件。② CHANGELOG 链接区核对后本就正确（`[0.1.x]` 指向 Fei2411，`[0.2.0]`/`[Unreleased]` 指向 a112121788），无需修改；改为在 `[0.1.3]` 小节加一句来源注记，在 `[0.2.0]` 小节补一条从上游 `ds-bot` 迁移的 Changed 条目。非目标：改产品代码、改 spec 之外的文档 |
+| Evidence | `git log --follow README.zh.md` 全部为上游提交（顶到 `41710f6`）；`git diff 5efb408 -- README.zh.md` 为空；全仓 grep 无 `README.zh` 引用 |
+| Acceptance | `npm test` 418/418；`node scripts/build-client.mjs --check` 通过（工作树里他人改动 `ebot/client.js` 未被本切片触碰，检查仍干净）；根目录无 `README.zh.md`，四个 README/CHANGELOG 无 `README.zh` 引用（grep 退出码 1） |
+| Risk | 上游贡献者按旧路径找中文文档会 404，语言头「中文 \| English」已在 `README.md`/`README.en.md` 顶部指路；下次上游同步若带回 `README.zh.md`，同步切片需再次丢弃 |
+| Rollback | `git revert` 本切片提交恢复该文件；CHANGELOG 两处编辑按 diff 还原 |
 
 ### `RL-002` - 发布 ebot 0.2.0：changelog 收口、版本号与标签（2026-10-13）
 

@@ -28,7 +28,7 @@
 - 新团队的总管默认名「总管」、角色「幕僚长」；已有团队保留原名。
 - README 与界面中文优先。
 
-发布序列见 `spec/backlog.md`：`RL-001`（发版核对）→ `RL-002`（收 changelog、改版本）→ `RL-004`（标签、Release、publish）。前两项 done，`RL-004` 等用户明确要求发布。
+发布序列见 `spec/backlog.md`：`RL-001`（发版核对）→ `RL-002`（收 changelog、改版本）→ `RL-003`（清漂移）→ `RL-004`（标签、Release、publish）。前三项 done，`RL-004` 等用户明确要求发布。
 
 ## Next
 
@@ -37,7 +37,7 @@
 1. `0.2.0` 发布后：与上游的下次同步切片（`upstream/main` 在 `292b735` 之后的新增），重查上游 0.1.4 起的行为差异。
 2. 保持与已验证 DSH 版本的插件契约；DSH 升级单独切片，不混进功能改动。单测基座仍是 `0.2.0-rc.2`，升基座单独做。
 3. CHANGELOG 里的已知限制：Bot 浏览器只在 Desktop、密钥不加密、同一 DSH home 只有一个写入者、群聊费 token。每一条单独开切片，不打包成“体验优化”。
-4. README.zh.md 仍是上游文案（`ds-bot` 安装示例），切一片按 `README.md` 的 ebot 事实重写，并同步 `README.en.md`。
+4. 与上游的下次同步（`upstream/main` 在 `292b735` 之后的新增）：上游的 `README.zh.md` 若被带回，再次丢弃（ebot 的中文文档是根 `README.md`，见 `RL-003`）。
 
 ## Later
 
