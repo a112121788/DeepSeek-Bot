@@ -25,7 +25,7 @@ ebot 是一个基于 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-
 2. **包名或地址** 填 `ebot`。在中国大陆，**安装源** 选 **中国大陆镜像源**。
 3. 点 **安装**，再点 **立即启用**。如果提示“下次启动生效”，完全退出 dsh 再打开。
 
-连不上 npm 时，第 2 步也可以填 [Releases](https://github.com/a112121788/DeepSeek-Bot/releases) 里下载的 `ebot-0.1.3.tgz` 的完整路径，或者 `github:a112121788/DeepSeek-Bot#v0.1.3&path:/ebot`（需要装 Git）。
+连不上 npm 时，第 2 步也可以填 [Releases](https://github.com/a112121788/DeepSeek-Bot/releases) 里下载的 `ebot-0.2.0.tgz` 的完整路径，或者 `github:a112121788/DeepSeek-Bot#v0.2.0&path:/ebot`（需要装 Git）。
 
 **dsh Web（Windows、macOS、Linux）**
 

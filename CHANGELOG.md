@@ -4,14 +4,17 @@ All notable changes to ebot are listed here. The format follows [Keep a Changelo
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-10-13
+
 ### Added
 
 - Merged upstream DS Bot 0.1.1–0.1.3. New since the last ebot baseline: `@` lists the Bots you can mention, **+ → Reference a chat** adds another chat as context, a Main Bot can stop another Bot's running turn, a member's approval request no longer holds up a group round, Bot-to-Bot messages reach a working Bot at its next step, Bots post progress on long tasks, every Bot can change its own name, role, color, model and instructions, and the Usage page groups its panels with a hover count on Activity days. The fixes of those releases come with it (damaged team files are kept as a backup, deleting a Bot or group removes its scheduled tasks, a long conversation's fresh part keeps the model and thinking level, and more).
+- New teams start with a Main Bot named 总管 whose role label is 幕僚长. Teams that already exist keep their names.
 - README: install ebot from a local checkout with `dsh plugin add .` in `ebot/`.
 
 ### Changed
 
-- Package version is `0.1.3`. The git tag and the GitHub release are not cut yet, so these notes stay under `[Unreleased]`. Git install examples name `v0.1.3`.
+- Package version is `0.2.0`. Git install examples name `v0.2.0`.
 - Settings → Connectors: Gitee beside GitHub. Paste a Gitee personal access token to use Gitee's tools for repositories, issues and pull requests. The token is kept as the `GITEE_TOKEN` secret. `gitee: false` hides it.
 
 ## [0.1.3] - 2026-10-12
@@ -117,7 +120,8 @@ If you used the legacy `dsh-bot` package, remove it before you install `ebot`. T
 - Only one DSH can change a team at a time; a second DSH on the same DSH home opens it read-only ([Data and backups](ebot/README.en.md#data-and-backups)).
 - Group chats use many tokens: each member reads the group and answers in turn.
 
-[Unreleased]: https://github.com/a112121788/DeepSeek-Bot/compare/v0.1.3...HEAD
+[Unreleased]: https://github.com/a112121788/DeepSeek-Bot/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/a112121788/DeepSeek-Bot/compare/v0.1.3...v0.2.0
 [0.1.3]: https://github.com/Fei2411/DeepSeek-Bot/compare/v0.1.2...v0.1.3
 [0.1.2]: https://github.com/Fei2411/DeepSeek-Bot/compare/v0.1.1...v0.1.2
 [0.1.1]: https://github.com/Fei2411/DeepSeek-Bot/compare/v0.1.0...v0.1.1
