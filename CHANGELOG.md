@@ -4,6 +4,10 @@ All notable changes to ebot are listed here. The format follows [Keep a Changelo
 
 ## [Unreleased]
 
+### Added
+
+- Settings → Learn: a crash course that teaches the Bot team in one read — the one-minute version, the core ideas, the first ten minutes, how to get good results, and answers to common questions. It follows the interface language: Chinese by default, English when DSH runs in English.
+
 ## [0.2.0] - 2026-10-13
 
 ### Added
