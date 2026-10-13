@@ -34,10 +34,10 @@
 
 按风险而不是按功能清单：
 
-1. `0.2.0` 发布后：与上游的下次同步切片（`upstream/main` 在 `292b735` 之后的新增），重查上游 0.1.4 起的行为差异。
+1. `0.2.0` 发布后：与上游的下次同步切片，主体是共享 Capabilities（上游 `[Unreleased]`，`ready` 队列的 `LL-005`，分叉点现为 `7e1c518`），同步时重查上游 0.1.4 起的行为差异。
 2. 保持与已验证 DSH 版本的插件契约；DSH 升级单独切片，不混进功能改动。单测基座仍是 `0.2.0-rc.2`，升基座单独做。
 3. CHANGELOG 里的已知限制：Bot 浏览器只在 Desktop、密钥不加密、同一 DSH home 只有一个写入者、群聊费 token。每一条单独开切片，不打包成“体验优化”。
-4. 与上游的下次同步（`upstream/main` 在 `292b735` 之后的新增）：上游的 `README.zh.md` 若被带回，再次丢弃（ebot 的中文文档是根 `README.md`，见 `RL-003`）。
+4. 与上游的下次同步（分叉点 `7e1c518` 之后的新增）：上游的 `README.zh.md` 若被带回，再次丢弃（ebot 的中文文档是根 `README.md`，见 `RL-003`）。上游 `devin/follow-through`、`devin/group-tasks` 两条未合并分支的方向记录在 backlog `LL-006`（draft），进 main 后再评估。
 
 ## Later
 
