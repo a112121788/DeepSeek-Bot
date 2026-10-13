@@ -90,8 +90,12 @@ start() {
   if ! alive web; then
     log="$HOME_DIR/web.log"
     rm -f "$log"
+    # The pin-browse overlay is a test fixture of a DeepSeek Harness checkout; an npm
+    # install of dsh has no apps/, so the patch is only passed when the file is there.
+    pin_overlay=""
+    [ -f "$DSH_HARNESS/apps/web/tests/pin-browse-picker.overlay.yml" ] && pin_overlay="--patch apps/web/tests/pin-browse-picker.overlay.yml"
     (cd "$DSH_HARNESS" && DSH_HOME="$HOME_DIR" DEEPSEEK_BASE_URL="http://127.0.0.1:$MOCK_PORT/v1" DEEPSEEK_API_KEY=mock-key \
-      setsid pnpm -s dsh --profile web --patch apps/web/tests/pin-browse-picker.overlay.yml --patch "$HOME_DIR/bench.patch.yml" \
+      setsid pnpm -s dsh --profile web $pin_overlay --patch "$HOME_DIR/bench.patch.yml" \
       --no-open --port "$WEB_PORT" </dev/null >"$log" 2>&1 & echo $! >"$HOME_DIR/web.pid")
     i=0
     until grep -q "dsh web: http" "$log" 2>/dev/null; do
