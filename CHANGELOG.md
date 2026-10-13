@@ -6,6 +6,7 @@ All notable changes to ebot are listed here. The format follows [Keep a Changelo
 
 ### Added
 
+- Merged upstream DS Bot 0.1.1–0.1.3. New since the last ebot baseline: `@` lists the Bots you can mention, **+ → Reference a chat** adds another chat as context, a Main Bot can stop another Bot's running turn, a member's approval request no longer holds up a group round, Bot-to-Bot messages reach a working Bot at its next step, Bots post progress on long tasks, every Bot can change its own name, role, color, model and instructions, and the Usage page groups its panels with a hover count on Activity days. The fixes of those releases come with it (damaged team files are kept as a backup, deleting a Bot or group removes its scheduled tasks, a long conversation's fresh part keeps the model and thinking level, and more).
 - README: install ebot from a local checkout with `dsh plugin add .` in `ebot/`.
 
 ### Changed

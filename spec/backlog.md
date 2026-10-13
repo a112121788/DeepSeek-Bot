@@ -1,8 +1,23 @@
 # Backlog
 
-状态日期：2026-10-12。规则见 `spec/00-lean-loop.md`。一次只取一个 `ready` 项。
+状态日期：2026-10-13。规则见 `spec/00-lean-loop.md`。一次只取一个 `ready` 项。
 
 ## Ready
+
+### `LL-004` - 冒烟验证合并后的上游功能
+
+上游 DS Bot 0.1.1–0.1.3 已并入（合并提交 `ded4110`），`npm test` 418/418、`build --check`、`npm run lint` 通过。单元测试之外，还需按仓库惯例跑一次 smoke：群聊、@提及列表、引用对话、审批不阻塞回合、总管停止成员回合这些新路径都在 `src/host/`。
+
+| 字段 | 内容 |
+|---|---|
+| 状态 | ready |
+| 优先级 | P0 |
+| Outcome | 维护者确认合并后的插件在真实 DSH 上能建团队、跑群聊回合，新功能入口可用 |
+| Scope | `dev/bench.sh smoke` 与 `dev/smoke.mjs`，必要时按新代码修 smoke 断言。非目标：改产品代码、发版 |
+| Evidence | `dev/smoke.mjs` 覆盖建 Bot、建群、群发、@接力；CHANGELOG `[Unreleased]` 列出的新交互 |
+| Acceptance | `CONTEXT_WINDOW=100000 CHECK_RATIO=0.45 dev/bench.sh smoke 3096 8796 reset && node dev/smoke.mjs smoke 3096` 通过，随后 `dev/bench.sh smoke 3096 8796 stop` |
+| Risk | smoke 需要 mock 模型与空闲端口；断言可能落后于上游新回合逻辑 |
+| Rollback | smoke 不改代码；修断言时按提交粒度回滚 |
 
 ### `LL-001` - 核对未发布变更仍可测
 
@@ -12,12 +27,26 @@
 |---|---|
 | 状态 | ready |
 | 优先级 | P0 |
-| Outcome | 维护者知道 `[Unreleased]` 里的安装说明、Gitee 连接器和总管自助设置仍与源码一致，且单元测试能过 |
+| Outcome | 维护者知道 `[Unreleased]` 里的安装说明、Gitee 连接器、总管自助设置和上游合并条目仍与源码一致，且单元测试能过 |
 | Scope | 读 `CHANGELOG.md`、`ebot/src/host/connectors.js`、`ebot/src/host/roster.js`、相关测试。只在发现文档与源码漂移时改文档。非目标：新功能、发布、改 DSH |
 | Evidence | `CHANGELOG.md` 的 `[Unreleased]`；连接器与名册测试在 `ebot/test/connectors.test.js`、`ebot/test/roster.test.js` |
 | Acceptance | 在 `ebot/` 运行 `npm test`。若本项改了 `src/client/`，再跑 `npm run build` |
-| Risk | 测试需要 `../deepseek-harness`（或 `DSH_HARNESS`）位于 README 中的 DSH 版本。失败时停，不改 Harness |
+| Risk | 测试依赖 `npm run harness` 安装到 `ebot/dev/harness/`（或 `DSH_HARNESS` 指向检出），版本须与 README 一致。失败时停，不改 Harness |
 | Rollback | 仅文档漂移时还原对应 markdown。不改产品行为则无需回滚代码 |
+
+## Done
+
+### `LL-MERGE` - 并入上游 DS Bot 0.1.1–0.1.3 的新增功能（2026-10-13）
+
+| 字段 | 内容 |
+|---|---|
+| 状态 | done |
+| Outcome | ebot 获得上游 0.1.1–0.1.3 的全部功能与修复，保留 Gitee 连接器、中文优先与 ebot 命名 |
+| Scope | 全仓合并；冲突取舍记录在合并提交 `ded4110` 与适配提交 `7e4a5f1` |
+| Evidence | `git merge-base` 分叉点 `bdc5fda`，上游 111 个提交并入；`npm test` 418/418 |
+| Acceptance | `npm test`、`node scripts/build-client.mjs --check`、`npm run lint`（警告数与合并前基线同为 16）全部通过 |
+| Risk | 上游 0.1.4 之后的行为差异需在下次同步时重查 |
+| Rollback | `git revert -m 1 ded4110` 回退整个合并 |
 
 ## Draft
 

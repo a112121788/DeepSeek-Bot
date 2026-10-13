@@ -71,7 +71,7 @@ In short: have a question? Ask the main bot.
 
 ### Group chats
 
-ebot has group chats. A group chat is a great way to get several bots to work together, but it clearly costs more. So ebot does this: every group chat has an admin. The admin answers your messages by default and calls in the other bots for you. You can also @ a bot directly, and it answers you directly.
+ebot has group chats. A group chat is a great way to get several bots to work together, but it clearly costs more. So ebot does this: every group chat has an admin. The admin answers your messages by default and calls in the other bots for you. You can also type @ and pick the bot from the list, and it answers you directly. To give the bots another chat as context, use + → Reference a chat in the message box.
 
 ![Group chat: the admin, Chief, hands the work to Writer and Coder](docs/images/group.png)
 

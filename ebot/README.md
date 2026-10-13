@@ -12,7 +12,7 @@ ebot 是 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness)（d
 
 - **长驻 Bot**：每个 Bot 都是「ebot」工作区里的一个 dsh Session，有自己的名字、角色、说明和模型。
 - **Bot 协作**：`message_bot` 给另一个 Bot 发消息，`create_bot` / `update_bot` 创建与配置 Bot，`ask_user` 向你提问且不阻塞其他 Bot。
-- **群聊**：成员轮流发言，每人先读最新消息。消息可用 `@Name` 把回合交给某人；没有新内容可说的成员保持安静（`[PASS]`）。每个成员在每个群里有独立的隐藏 Session，群聊读不到 Bot 的私聊。
+- **群聊**：成员轮流发言，每人先读最新消息。消息可用 `@Name` 把回合交给某人；输入 `@` 可以从列表里选人。**+ → 引用对话** 把另一个 Bot 的会话作为上下文加进消息，在群里由应答的成员收到。没有新内容可说的成员保持安静（`[PASS]`）。每个成员在每个群里有独立的隐藏 Session，群聊读不到 Bot 的私聊。
 - **角色与权限**：
 
   | 谁 | 能做什么 |
