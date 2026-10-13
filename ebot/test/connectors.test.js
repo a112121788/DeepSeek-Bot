@@ -96,7 +96,7 @@ test('connecting saves the token, kept out of every Bot shell, and mounts GitHub
   t.after(() => { globalThis.fetch = realFetch })
   globalThis.fetch = async () => answer(200, { login: 'octo' })
   const { ctx, home, mounts } = setup()
-  t.after(() => { ctx.dispose(); rmSync(home, { recursive: true, force: true }) })
+  t.after(() => { ctx.dispose(); rmSync(home, { recursive: true, force: true, maxRetries: 5 }) })
   const token = fresh()
 
   const before = await call(ctx, 'state', {})
@@ -159,7 +159,7 @@ test('a token GitHub refuses is not saved', async (t) => {
   t.after(() => { globalThis.fetch = realFetch })
   globalThis.fetch = async () => answer(401, {})
   const { ctx, home, mounts } = setup()
-  t.after(() => { ctx.dispose(); rmSync(home, { recursive: true, force: true }) })
+  t.after(() => { ctx.dispose(); rmSync(home, { recursive: true, force: true, maxRetries: 5 }) })
   const result = await call(ctx, 'connector-connect', { id: 'github', token: fresh() })
   assert.equal(result.ok, false)
   assert.match(result.error.message, /did not accept/)
@@ -172,7 +172,7 @@ test('a failed MCP connection shows the error without the token, and Try again m
   t.after(() => { globalThis.fetch = realFetch })
   globalThis.fetch = async () => answer(200, { login: 'octo' })
   const { ctx, home, mounts } = setup({ fail: true })
-  t.after(() => { ctx.dispose(); rmSync(home, { recursive: true, force: true }) })
+  t.after(() => { ctx.dispose(); rmSync(home, { recursive: true, force: true, maxRetries: 5 }) })
   const token = fresh()
   const result = await call(ctx, 'connector-connect', { id: 'github', token })
   const github = result.value.find(item => item.id === 'github')
@@ -188,7 +188,7 @@ test('deleting GITHUB_TOKEN on the Secrets page unmounts GitHub', async (t) => {
   t.after(() => { globalThis.fetch = realFetch })
   globalThis.fetch = async () => answer(200, { login: 'octo' })
   const { ctx, home, mounts } = setup()
-  t.after(() => { ctx.dispose(); rmSync(home, { recursive: true, force: true }) })
+  t.after(() => { ctx.dispose(); rmSync(home, { recursive: true, force: true, maxRetries: 5 }) })
   await call(ctx, 'connector-connect', { id: 'github', token: fresh() })
   await call(ctx, 'secret-delete', { name: 'GITHUB_TOKEN' })
   const state = await call(ctx, 'state', {})
@@ -201,7 +201,7 @@ test('github: false and gitee: false hide those connectors', async (t) => {
   const ctx = fakeContext()
   capture(ctx)
   apply(ctx, { home, github: false, gitee: false })
-  t.after(() => { ctx.dispose(); rmSync(home, { recursive: true, force: true }) })
+  t.after(() => { ctx.dispose(); rmSync(home, { recursive: true, force: true, maxRetries: 5 }) })
   assert.deepEqual((await call(ctx, 'state', {})).value.connectors, [])
 })
 
@@ -220,7 +220,7 @@ test('a GitHub address without https refuses to send the token', async (t) => {
   let asked = false
   globalThis.fetch = async () => { asked = true; return answer(200, { login: 'octo' }) }
   const { ctx, home, mounts } = setup({ github: { url: 'http://mcp.test/', api: 'https://gh.test' } })
-  t.after(() => { ctx.dispose(); rmSync(home, { recursive: true, force: true }) })
+  t.after(() => { ctx.dispose(); rmSync(home, { recursive: true, force: true, maxRetries: 5 }) })
   const refused = await call(ctx, 'connector-connect', { id: 'github', token: fresh() })
   assert.equal(refused.ok, false)
   assert.match(refused.error.message, /https/)

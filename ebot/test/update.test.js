@@ -116,6 +116,24 @@ test('a versioned GitHub install follows the latest release tag and keeps its pa
   assert.deepEqual(installs, [['github:a112121788/DeepSeek-Bot#v9.1.0&path:/ebot', {}]])
 })
 
+test('a versioned GitHub install follows the release to the repository\'s current address', async () => {
+  const { rt, installs } = start({
+    source: 'github:old-owner/DeepSeek-Bot#v0.1.0&path:/ebot',
+    answers: {
+      'https://api.github.com/repos/old-owner/DeepSeek-Bot/releases/latest': {
+        tag_name: 'v9.1.0',
+        html_url: 'https://github.com/a112121788/DeepSeek-Bot/releases/tag/v9.1.0',
+      },
+    },
+  })
+  const view = await rt.updateCheck()
+  assert.equal(view.available, true)
+  assert.equal(view.latest, '9.1.0')
+  rt.updateStart()
+  await flush()
+  assert.deepEqual(installs, [['github:a112121788/DeepSeek-Bot#v9.1.0&path:/ebot', {}]])
+})
+
 test('a linked checkout, an unversioned git install, or a disabled check never asks the network', async () => {
   for (const source of [`link:/work/${PKG.name}`, 'github:a112121788/DeepSeek-Bot#main', undefined]) {
     const { rt, fetched } = start({ source })
@@ -154,7 +172,7 @@ test('without a source from the plugin manager, the profile\'s own dependency en
   assert.equal(view.available, true)
   writeFileSync(join(dir, 'package.json'), JSON.stringify({ dependencies: { [PKG.name]: 'link:/work/ebot' } }))
   assert.equal((await rt.updateCheck({ fresh: true })).source, 'path')
-  rmSync(dir, { recursive: true, force: true })
+  rmSync(dir, { recursive: true, force: true, maxRetries: 5 })
 })
 
 test('a check that finds nothing clears the version a check before it found', async () => {
@@ -179,7 +197,7 @@ test('a check that finds nothing clears the version a check before it found', as
   const gone = await rt.updateCheck({ fresh: true })
   assert.equal(gone.available, false)
   assert.equal(gone.latest, null)
-  rmSync(dir, { recursive: true, force: true })
+  rmSync(dir, { recursive: true, force: true, maxRetries: 5 })
 })
 
 test('a failed install reports why and can be tried again', async () => {
