@@ -9,3 +9,6 @@ node_modules/
 .dsh-home/
 /shots/
 .playwright-mcp/
+
+# The DSH packages that npm run harness installs for the tests and the linter.
+ebot/dev/harness/

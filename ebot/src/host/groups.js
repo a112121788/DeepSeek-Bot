@@ -516,7 +516,7 @@ export function install(rt) {
     if (!quiet) room.botRounds = (room.botRounds ?? 0) + 1
     await rt.save()
     await postToRoom(room, member, text, { late: true, ...(quiet ? { quiet: true } : {}) })
-      .catch(error => rt.warn('ds-bot: late group reply from %s failed: %s', member.name, error))
+      .catch(error => rt.warn('ebot: late group reply from %s failed: %s', member.name, error))
   }
   rt.lateRoomReply = lateRoomReply
 
@@ -530,7 +530,7 @@ export function install(rt) {
     const { code, status, message } = failure
     await postToRoom(room, member, `Could not finish: its model call failed (${failureLine(failure)}).`, {
       late: true, quiet: true, failed: { code, ...(status ? { status } : {}), message },
-    }).catch(error => rt.warn('ds-bot: late group failure from %s failed: %s', member.name, error))
+    }).catch(error => rt.warn('ebot: late group failure from %s failed: %s', member.name, error))
   }
   rt.lateRoomFailure = lateRoomFailure
 

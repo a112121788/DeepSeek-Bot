@@ -139,7 +139,7 @@ export function install(rt) {
       if (running.length === 0) refuse(`${target.name} is not running right now, so there is nothing to stop. Use message_bot to reach it.`)
       for (const sessionId of running) {
         const agent = await rt.resolveAgent(sessionId)
-        agent.cancel({ kind: 'hook', reason: 'ds-bot/stopped' })
+        agent.cancel({ kind: 'hook', reason: 'ebot/stopped' })
       }
       const why = String(args.reason ?? '').trim() || 'Stop what you are doing; the previous turn was ended on purpose. Acknowledge briefly.'
       await rt.deliver({ fromId: sender.id, toId: target.id, text: why, role: 'stopped' })

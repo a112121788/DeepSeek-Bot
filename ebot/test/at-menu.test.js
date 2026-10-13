@@ -15,7 +15,7 @@ const roster = indexRoster({
 const names = rows => rows.map(row => row.bot?.name ?? 'everyone')
 
 test('a session mention is the one DSH writes and reads back', () => {
-  for (const [id, label] of [['s-1', 'Chat with King'], ['会话/ä"x', 'a ] b \\ c'], ['', '']]) {
+  for (const [id, label] of [['s-1', '与 King 的对话'], ['会话/ä"x', 'a ] b \\ c'], ['', '']]) {
     const mention = sessionMention(id, label)
     assert.equal(mention, formatSessionReferenceMention({ sessionId: id, label }))
     assert.deepEqual(parseSessionReferenceText(`see ${mention}`), { text: `see @${label}`, references: [{ sessionId: id, label }] })
@@ -44,7 +44,7 @@ test('the chats are the other Bots\' current parts, then the latest Sessions out
     },
   }
   assert.deepEqual(chatRows(roster, list, 'chief-2').map(row => [row.sessionId, row.label]), [
-    ['king', 'Chat with King'], ['writer', 'Chat with Writer'], ['new', 'New work'], ['old', 'Old work'],
+    ['king', '与 King 的对话'], ['writer', '与 Writer 的对话'], ['new', 'New work'], ['old', 'Old work'],
   ])
   assert.deepEqual(chatRows(roster, list, 'room').map(row => row.sessionId), ['chief-2', 'king', 'writer', 'new', 'old'])
   assert.deepEqual(chatRows(roster, list, 'new'), [])
@@ -67,12 +67,12 @@ test('the chats join only the menu that "+" opened, and a pick inserts a session
   assert.deepEqual(rows.map(row => row.name), ['King', 'Writer'])
   const picked = chats.onPick({ candidate: rows[0] })
   assert.deepEqual(picked.insert, {
-    source: CHATS_SOURCE, ref: sessionMention('king', 'Chat with King'), label: 'Chat with King', appearance: 'session', clipboardText: sessionMention('king', 'Chat with King'),
+    source: CHATS_SOURCE, ref: sessionMention('king', '与 King 的对话'), label: '与 King 的对话', appearance: 'session', clipboardText: sessionMention('king', '与 King 的对话'),
   })
   assert.equal(await chats.codec.serialize(picked.insert.ref), picked.insert.ref)
 
   const mentions = await bots.candidates({ sessionId: 'room' }, { query: '' })
-  assert.deepEqual(mentions.map(row => [row.name, row.description]), [['Chief', 'Lead'], ['King', undefined], ['Everyone', '2 members']])
+  assert.deepEqual(mentions.map(row => [row.name, row.description]), [['Chief', 'Lead'], ['King', undefined], ['所有人', '2 位成员']])
   assert.deepEqual(bots.onPick({ candidate: mentions[1] }), { text: '@King ' })
   assert.deepEqual(await bots.candidates({ sessionId: 'plain' }, { query: '' }), [])
 })

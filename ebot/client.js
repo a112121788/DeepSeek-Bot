@@ -5765,8 +5765,8 @@ function ComposerPlus({ sessionId, inputActions, useRoster, actions }) {
 }
 
 // src/client/at-menu.js
-var BOTS_SOURCE = "ds-bot";
-var CHATS_SOURCE = "ds-bot-chats";
+var BOTS_SOURCE = "ebot";
+var CHATS_SOURCE = "ebot-chats";
 var ROOM_ALL = ["all", "everyone", "所有人", "全体"];
 var OTHER_CHATS_MAX = 8;
 var conversationOf = (roster, sessionId) => {
@@ -13273,7 +13273,7 @@ function apply(ctx) {
       },
       turnContext: (turn) => {
         const snapshot = chat.getSnapshot();
-        if (snapshot === void 0) throw new Error("ds-bot: Chat target is unavailable");
+        if (snapshot === void 0) throw new Error("ebot: Chat target is unavailable");
         return snapshot.nodes.turnDataSource(Number(turn), "context");
       }
     } };
@@ -13295,7 +13295,7 @@ function apply(ctx) {
           atMenu = null;
           for (const off of offs) off();
         };
-      }, "ds-bot: @ menu");
+      }, "ebot: @ menu");
     });
     return () => fiber.dispose();
   };

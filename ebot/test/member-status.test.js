@@ -36,8 +36,8 @@ test('the members line names who waits for an approval first, then who is at wor
   }
   const busy = busyMembers(room, work, roster)
   assert.deepEqual(plain(busy.map(entry => [entry.bot.name, entry.state])), [['Anvil', 'ask'], ['Flint', 'ask'], ['Prism', 'ask'], ['Quill', 'work'], ['Comet', 'work']])
-  assert.deepEqual(plain(summaryText(busy)), { waiting: 'Anvil, Flint and 1 more are waiting for your approval', doing: 'Quill · Writing changes… +1' })
-  assert.deepEqual(plain(summaryText(busy.slice(1, 3))), { waiting: 'Flint and Prism are waiting for your approval', doing: '' })
-  assert.deepEqual(plain(summaryText(busy.slice(4))), { waiting: '', doing: 'Comet · Thinking about it…' })
+  assert.deepEqual(plain(summaryText(busy)), { waiting: 'Anvil、Flint 等 3 个等你批准', doing: 'Quill · 写入修改… +1' })
+  assert.deepEqual(plain(summaryText(busy.slice(1, 3))), { waiting: 'Flint、Prism 等你批准', doing: '' })
+  assert.deepEqual(plain(summaryText(busy.slice(4))), { waiting: '', doing: 'Comet · 想一想…' })
   assert.equal(busyMembers(room, { bots: {}, approvals: [] }, roster).length, 0)
 })

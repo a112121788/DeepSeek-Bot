@@ -147,7 +147,7 @@ test('a message the composer queues mid-round joins the round and leaves the Ses
 
   await answer(second.sessionId, second.message.source.exchangeId, 'Ping back!', 2)
   const result = JSON.parse(await running)
-  assert.deepEqual(result.replies.map(reply => reply.name ?? 'User'), ['Chief', 'User', 'Writer'])
+  assert.deepEqual(result.replies.map(reply => reply.name ?? 'User'), ['总管', 'User', 'Writer'])
   // Taken out of the queue, the message opens no second round after this one.
   assert.deepEqual(inboxOf(room.id).nextTurn, [])
 })
@@ -172,7 +172,7 @@ test('a plain message steered mid-round is answered by everyone, admin first, in
   assert.match(third.message.content[0].text, /steer this way/)
   await answer(third.sessionId, third.message.source.exchangeId, 'two', 3)
   const result = JSON.parse(await running)
-  assert.deepEqual(result.replies.map(reply => reply.name ?? 'User'), ['Chief', 'User', 'Chief', 'Writer'])
+  assert.deepEqual(result.replies.map(reply => reply.name ?? 'User'), ['总管', 'User', '总管', 'Writer'])
   assert.deepEqual(inboxOf(room.id).nextStep, [])
 })
 
@@ -199,7 +199,7 @@ test('a message sent during the last speaker\'s turn is still answered in the ro
   assert.ok(fourth, 'and so does the Writer')
   await answer(fourth.sessionId, fourth.message.source.exchangeId, 'Me too', 4)
   const result = JSON.parse(await running)
-  assert.deepEqual(result.replies.map(reply => reply.name ?? 'User'), ['Chief', 'Writer', 'User', 'Chief', 'Writer'])
+  assert.deepEqual(result.replies.map(reply => reply.name ?? 'User'), ['总管', 'Writer', 'User', '总管', 'Writer'])
 })
 
 test('in admin mode a plain mid-round message goes to the admin', async (t) => {
@@ -222,7 +222,7 @@ test('in admin mode a plain mid-round message goes to the admin', async (t) => {
   assert.match(third.message.content[0].text, /what do you think\?/)
   await answer(third.sessionId, third.message.source.exchangeId, 'Admin here', 3)
   const result = JSON.parse(await running)
-  assert.deepEqual(result.replies.map(reply => reply.name ?? 'User'), ['Chief', 'Writer', 'User', 'Chief'])
+  assert.deepEqual(result.replies.map(reply => reply.name ?? 'User'), ['总管', 'Writer', 'User', '总管'])
 })
 
 test('a mid-round user line resets the room\'s bot-round budget', async (t) => {
@@ -267,7 +267,7 @@ test('a message with an image or a chat reference waits for its own round, and s
   assert.doesNotMatch(second.message.content[0].text, /see this|after the image|about @/)
   await answer(second.sessionId, second.message.source.exchangeId, 'two', 2)
   const result = JSON.parse(await running)
-  assert.deepEqual(result.replies.map(reply => reply.name ?? 'User'), ['Chief', 'Writer'])
+  assert.deepEqual(result.replies.map(reply => reply.name ?? 'User'), ['总管', 'Writer'])
   assert.equal(inboxOf(room.id).nextTurn.length, 2)
   assert.equal(inboxOf(room.id).nextStep.length, 1)
 })
@@ -283,7 +283,7 @@ test('the greeting round leaves a waiting message for its own round', async (t) 
   await compose(room.id, 'hello there')
   await answer(first.sessionId, first.message.source.exchangeId, 'Welcome!', 1)
   const result = JSON.parse(await running)
-  assert.deepEqual(result.replies.map(reply => reply.name ?? 'User'), ['Chief'])
+  assert.deepEqual(result.replies.map(reply => reply.name ?? 'User'), ['总管'])
   assert.equal(inboxOf(room.id).nextTurn.length, 1)
 })
 
@@ -317,5 +317,5 @@ test('a message sent between rounds still opens a full round', async (t) => {
   assert.ok(second)
   await answer(second.sessionId, second.message.source.exchangeId, 'Hello!', 2)
   const result = JSON.parse(await running)
-  assert.deepEqual(result.replies.map(reply => reply.name ?? 'User'), ['Chief', 'Writer'])
+  assert.deepEqual(result.replies.map(reply => reply.name ?? 'User'), ['总管', 'Writer'])
 })

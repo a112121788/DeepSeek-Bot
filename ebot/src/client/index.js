@@ -706,7 +706,7 @@ export function apply(ctx) {
       },
       turnContext: (turn) => {
         const snapshot = chat.getSnapshot()
-        if (snapshot === undefined) throw new Error('ds-bot: Chat target is unavailable')
+        if (snapshot === undefined) throw new Error('ebot: Chat target is unavailable')
         return snapshot.nodes.turnDataSource(Number(turn), 'context')
       },
     } }
@@ -732,7 +732,7 @@ export function apply(ctx) {
           atMenu = null
           for (const off of offs) off()
         }
-      }, 'ds-bot: @ menu')
+      }, 'ebot: @ menu')
     })
     return () => fiber.dispose()
   }

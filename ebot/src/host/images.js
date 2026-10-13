@@ -201,7 +201,7 @@ export function install(rt) {
           agent.session.append('image/offload', { targets })
           await ctx.sessions.flush(agent.session)
         } catch (error) {
-          rt.warn('ds-bot: old images for %s not offloaded: %s', agent.id, error)
+          rt.warn('ebot: old images for %s not offloaded: %s', agent.id, error)
         }
       })()
     })

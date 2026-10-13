@@ -28,7 +28,7 @@ function patchSync(method, replace) {
 }
 
 function runtime(t, saved) {
-  const home = fs.mkdtempSync(join(tmpdir(), 'ds-bot-store-'))
+  const home = fs.mkdtempSync(join(tmpdir(), 'ebot-store-'))
   const statePath = join(home, 'state.json')
   if (saved !== undefined) fs.writeFileSync(statePath, typeof saved === 'string' ? saved : JSON.stringify(saved))
   const warnings = []
@@ -139,7 +139,7 @@ test('a state from a newer version remains untouched', async (t) => {
   const original = JSON.stringify({ version: 999, revision: 77, recoveryMarker: 'keep' })
   const { rt, statePath } = runtime(t, original)
   await rt.load()
-  assert.match(rt.readOnly(), /saved by a newer DS Bot; update DS Bot/)
+  assert.match(rt.readOnly(), /saved by a newer ebot; update ebot/)
   rt.state.prefs.marker = 'not saved'
   await rt.save()
   assert.equal(fs.readFileSync(statePath, 'utf8'), original)

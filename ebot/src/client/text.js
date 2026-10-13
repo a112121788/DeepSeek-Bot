@@ -121,7 +121,7 @@ export function toolArgs(root) {
 }
 
 // A relay context is a Bot-to-Bot request, reply or stop notice injected into the
-// model's history. ds-bot's own package sources (kickoff, room, secret, handoff
+// model's history. ebot's own package sources (kickoff, room, secret, handoff
 // parts) are not events in the chat, nor is a deferred request handed back after
 // its line was already shown.
 const RELAY_ROLES = new Set(['request', 'reply', 'stopped'])

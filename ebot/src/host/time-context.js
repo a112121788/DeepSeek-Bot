@@ -1,6 +1,6 @@
 import { createUserMessage } from '@deepseek-ai/dsh-llm'
 
-const SOURCE = 'ds-bot-time-context'
+const SOURCE = 'ebot-time-context'
 const isClock = source => source?.kind === SOURCE || source?.kind === 'time-context'
 
 export function install(rt) {
