@@ -4,21 +4,6 @@
 
 ## Ready
 
-### `LL-004` - 冒烟验证合并后的上游功能
-
-上游 DS Bot 0.1.1–0.1.3 已并入（合并提交 `ded4110`），`npm test` 418/418、`build --check`、`npm run lint` 通过。单元测试之外，还需按仓库惯例跑一次 smoke：群聊、@提及列表、引用对话、审批不阻塞回合、总管停止成员回合这些新路径都在 `src/host/`。
-
-| 字段 | 内容 |
-|---|---|
-| 状态 | ready |
-| 优先级 | P0 |
-| Outcome | 维护者确认合并后的插件在真实 DSH 上能建团队、跑群聊回合，新功能入口可用 |
-| Scope | `dev/bench.sh smoke` 与 `dev/smoke.mjs`，必要时按新代码修 smoke 断言。非目标：改产品代码、发版 |
-| Evidence | `dev/smoke.mjs` 覆盖建 Bot、建群、群发、@接力；CHANGELOG `[Unreleased]` 列出的新交互 |
-| Acceptance | `CONTEXT_WINDOW=100000 CHECK_RATIO=0.45 dev/bench.sh smoke 3096 8796 reset && node dev/smoke.mjs smoke 3096` 通过，随后 `dev/bench.sh smoke 3096 8796 stop` |
-| Risk | smoke 需要 mock 模型与空闲端口；断言可能落后于上游新回合逻辑 |
-| Rollback | smoke 不改代码；修断言时按提交粒度回滚 |
-
 ### `LL-001` - 核对未发布变更仍可测
 
 `LL-003` 已把包版本改为 `0.1.3`。本项验收时把版本字段算进“文档与源码一致”，不要把版本改回 `0.1.2`。
@@ -35,6 +20,18 @@
 | Rollback | 仅文档漂移时还原对应 markdown。不改产品行为则无需回滚代码 |
 
 ## Done
+
+### `LL-004` - 冒烟验证合并后的上游功能（2026-10-13）
+
+| 字段 | 内容 |
+|---|---|
+| 状态 | done |
+| Outcome | 合并后的插件在 mock 基座上完整跑通建团队、群聊回合、@接力、长对话压缩与交接 |
+| Scope | `dev/bench.sh smoke` + `dev/smoke.mjs`；顺带修了 bench 在 npm 安装的 dsh 下无法启动的问题 |
+| Evidence | `node dev/smoke.mjs smoke 3096`：全部 32 步通过；`npm test` 复跑仍 418/418 |
+| Acceptance | smoke 全部步骤 ok；`dev/bench.sh smoke 3096 8796 stop` 后端口与进程无残留 |
+| Risk | macOS 缺 GNU `setsid`，bench 需要 PATH 上有 setsid shim（本机已装 /usr/local/bin/setsid）；pnpm 11 默认 `strict-dep-builds`，`dev/harness/pnpm-workspace.yaml` 已写 `dangerouslyAllowAllBuilds: true` |
+| Rollback | bench 修复独立提交 `371d0da`，可单独 revert |
 
 ### `LL-MERGE` - 并入上游 DS Bot 0.1.1–0.1.3 的新增功能（2026-10-13）
 
