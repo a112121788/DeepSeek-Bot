@@ -69,14 +69,14 @@ export function AboutPage({ useUpdate, actions, run, Section, Row }) {
   const dshShown = dshNew && dsh.available
   const botControl = phase === 'installed' ? null
     : update.available || phase === 'installing'
-      ? h('button', { type: 'button', className: 'bt-fb-primary', disabled: phase === 'installing', onClick: () => run(actions.installUpdate()) },
+      ? h('button', { type: 'button', className: 'bt-about-primary', disabled: phase === 'installing', onClick: () => run(actions.installUpdate()) },
           phase === 'installing' ? t('Updating…') : phase === 'failed' ? t('Try again') : t('Update'))
       : h('button', { type: 'button', className: 'bt-soft bt-soft-sm', disabled: checking || update.enabled === false, onClick: check }, checking ? t('Checking…') : t('Check for updates'))
   const dshControl = !dshNew || dshPhase === 'installed' ? null
     : dsh.kind === 'app'
       ? dsh.available ? h('button', { type: 'button', className: 'bt-soft bt-soft-sm', onClick: () => run(actions.openAppUpdates(dsh.verified)) }, t('Open updates')) : null
       : dsh.available || dshPhase !== 'idle'
-        ? h('button', { type: 'button', className: 'bt-fb-primary', disabled: dshPhase === 'installing', onClick: () => run(actions.installDshUpdate()) },
+        ? h('button', { type: 'button', className: 'bt-about-primary', disabled: dshPhase === 'installing', onClick: () => run(actions.installDshUpdate()) },
             dshPhase === 'installing' ? t('Updating…') : dshPhase === 'failed' ? t('Try again') : t('Update'))
         : null
   const repo = update.repoUrl
@@ -98,8 +98,7 @@ export function AboutPage({ useUpdate, actions, run, Section, Row }) {
       dsh?.current ? h(Row, { label: 'DeepSeek Harness', hint: dshHint(dsh, dshShown) }, dshControl) : null),
     h(Section, { key: 'links', title: t('Links') },
       repo ? h(Row, { label: t('Source code'), hint: repo.replace(/^https:\/\//, '') }, h('a', linkProps(repo), h(GitHubMark), t('Open'))) : null,
-      update.notesUrl ? h(Row, { label: t('Release notes') }, h('a', linkProps(update.notesUrl), t('Open'))) : null,
-      h(Row, { label: t('Report a problem') }, h('button', { type: 'button', className: 'bt-soft bt-soft-sm', onClick: () => actions.openSettings('feedback') }, t('Open')))),
+      update.notesUrl ? h(Row, { label: t('Release notes') }, h('a', linkProps(update.notesUrl), t('Open'))) : null),
   ]
 }
 
@@ -127,6 +126,9 @@ body:not([data-bt-motion=quiet]) .bt-about-mark:hover .bt-mark[data-live][data-s
 @keyframes bt-star-count-in{from{translate:-6px 0}}
 .bt-about-link{display:inline-flex;align-items:center;gap:6px;text-decoration:none}
 .bt-about-link svg{width:14px;height:14px}
-.bt-fb-primary:disabled{opacity:.6;cursor:default;filter:none}
+.bt-about-primary{height:28px;border-radius:999px;border:0;background:var(--bt-accent);color:var(--bt-accent-ink,#fff);padding:0 14px;font-size:12px;cursor:pointer;transition:filter .12s ease}
+.bt-about-primary:hover{filter:brightness(1.08)}
+.bt-about-primary:active{filter:brightness(.94)}
+.bt-about-primary:disabled{opacity:.6;cursor:default;filter:none}
 @media (prefers-reduced-motion:reduce){.bt-star:hover .bt-star-icon,.bt-star-count{animation:none}}
 `

@@ -30,6 +30,7 @@ import { installLocale, language } from './i18n.js'
 import { noteClientError, quietly } from './diagnostics.js'
 import { ErrorToast, FEEDBACK_CSS } from './feedback.js'
 import { ABOUT_CSS } from './about.js'
+import { LEARN_CSS } from './learn.js'
 import { MEMBER_CSS, MemberDock } from './member-status.js'
 import { USER_MESSAGE_CSS, UserMessageCell, canDrawUserMessages } from './user-message.js'
 
@@ -755,6 +756,7 @@ export function apply(ctx) {
     installCompiledStyles(SCHEDULE_CSS, 'schedules'),
     installCompiledStyles(FEEDBACK_CSS, 'feedback'),
     installCompiledStyles(ABOUT_CSS, 'about'),
+    installCompiledStyles(LEARN_CSS, 'learn'),
     installCompiledStyles(MEMBER_CSS, 'members'),
     installCompiledStyles(USER_MESSAGE_CSS, 'user-messages'),
     browsers ? installCompiledStyles(BROWSER_CSS, 'browser') : null,

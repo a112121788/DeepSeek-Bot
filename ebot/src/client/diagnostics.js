@@ -1,4 +1,4 @@
-// What went wrong in this browser, for Settings → Feedback and the report it builds.
+// What went wrong in this browser, for the error toast and the diagnostics log.
 // Calls whose failures the interface swallows (polls, previews) still land here.
 import { t, language } from './i18n.js'
 
