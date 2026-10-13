@@ -1,6 +1,6 @@
 # Roadmap
 
-状态日期：2026-10-13。包版本 **`0.2.0`** 已收口（CHANGELOG `[0.2.0] - 2026-10-13`，`RL-002`），标签 `v0.2.0`、GitHub Release 与 npm publish 待用户指令（`RL-004`）。本地 `v0.1.0`–`v0.1.3` 标签全部是上游 DS Bot 的发布标签（随 `ded4110` 合并带入），CHANGELOG 里也已有上游 `[0.1.3]` 小节；ebot 自己的发布标签从 `v0.2.0` 起。已验证的 DSH 为 `0.2.1-alpha.1`（单测基座 `dev/harness` 锁 `0.2.0-rc.2`）。
+状态日期：2026-10-13。**ebot `v0.2.0` 已发布**（`RL-004` done）：附注标签 `v0.2.0` 指向收口提交 `7ab5677`，已推 Gitee（eclouddev/ebot）与 GitHub（a112121788/ebot，仓库已由 DeepSeek-Bot 改名），GitHub Release 挂 `ebot-0.2.0.tgz`（https://github.com/a112121788/ebot/releases/tag/v0.2.0）。npm publish 因本机无凭据拆到 `RL-005`（ready）。本地 `v0.1.0`–`v0.1.3` 标签全部是上游 DS Bot 的发布标签，ebot 自己的发布标签从 `v0.2.0` 起。已验证的 DSH 为 `0.2.1-alpha.1`（单测基座 `ebot/dev/harness` 锁 `0.2.0-rc.2`）。
 
 ## 北极星
 
@@ -17,9 +17,9 @@
 
 ## Now
 
-发布 **ebot `0.2.0`**：仓库内收口已完成（`RL-002`），剩 `RL-004`（`v0.2.0` 标签、GitHub Release、npm publish，等用户指令）。后续切片都从 `spec/backlog.md` 的 ready 队列进入。
+ebot `v0.2.0` 已发布（`RL-004` done）：标签指向收口提交 `7ab5677`，Gitee/GitHub 双远端标签、GitHub Release（tarball）就位；`RL-005`（npm publish，等用户 npm 登录）与 `LL-005`（并入上游共享 Capabilities）在 ready 队列，一次只取一项。
 
-`0.2.0`（原 `[Unreleased]`）含：
+`0.2.0` 含：
 
 - 上游 0.1.1–0.1.3 全部并入：@提及列表、+ → 引用对话、总管可停止成员回合、审批不阻塞群回合、Bot 间消息在下一步送达、长任务进度播报、每个 Bot 能改自己的设置，及上游 0.1.3 的全部修复。
 - 文档：从本地检出用 `dsh plugin add .` 安装。
@@ -28,7 +28,7 @@
 - 新团队的总管默认名「总管」、角色「幕僚长」；已有团队保留原名。
 - README 与界面中文优先。
 
-发布序列见 `spec/backlog.md`：`RL-001`（发版核对）→ `RL-002`（收 changelog、改版本）→ `RL-003`（清漂移）→ `RL-004`（标签、Release、publish）。前三项 done，`RL-004` 等用户明确要求发布。
+收口提交 `7ab5677` 之后的 Learn 页（`a90d574` 新增、`743a10e` 随之移除 Feedback 页）记在 CHANGELOG `[Unreleased]`，属下一版本周期，随 `LL-005` 一并发布。
 
 ## Next
 

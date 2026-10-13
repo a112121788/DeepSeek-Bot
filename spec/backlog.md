@@ -4,18 +4,18 @@
 
 ## Ready
 
-### `RL-004` - 发布 ebot v0.2.0：标签、Release 与 npm publish
+### `RL-005` - npm publish `ebot@0.2.0`
 
 | 字段 | 内容 |
 |---|---|
 | 状态 | ready |
-| 优先级 | P0 |
-| Outcome | 用户能从 GitHub Release 下载 `ebot-0.2.0.tgz` 或从 npm/git 标签安装 `0.2.0` |
-| Scope | 在 `RL-002` 完成的基础上：`git tag v0.2.0`（指向 CHANGELOG `[0.2.0]` 小节所在提交）、推送 `main` 与标签到 Gitee origin、建 GitHub Release、`npm publish`（如在 npm 发布）。只在用户明确要求时执行。非目标：改代码或文档 |
-| Evidence | `RL-002` 已把 changelog、版本号、README 示例收口为 0.2.0；本地 `v0.1.0`–`v0.1.3` 是上游标签，ebot 首个自有标签从 `v0.2.0` 起 |
-| Acceptance | `git tag` 含指向收口提交的 `v0.2.0`；GitHub Release 与 npm 上出现 `0.2.0`；`origin/main` 包含收口提交 |
-| Risk | 推送与发布会公开内容；npm 需要账号凭据；GitHub Release 建在 a112121788/DeepSeek-Bot，Gitee 推送到 eclouddev/ebot，两处远端都要更新 |
-| Rollback | 远端删标签、删 Release、npm `unpublish`（有时限）；本地删标签后把小节移回 `[Unreleased]` |
+| 优先级 | P2 |
+| Outcome | 用户能 `npm install ebot@0.2.0`，或让 DSH 插件管理器从 npm 装 `0.2.0` |
+| Scope | 在 npm 登录后执行发布：`npm publish /tmp/rl004/ebot-0.2.0.tgz`（RL-004 已产出的包）或从标签树重新 pack。非目标：改代码、改 README 示例 |
+| Evidence | `RL-004` 已完成标签与 GitHub Release；npm 本机未登录（`npm whoami` 报 ENEEDAUTH），registry 上无 `ebot` 包 |
+| Acceptance | `npm view ebot versions` 含 `0.2.0`；README 里的 npm 安装路径可用 |
+| Risk | 首次发布占用 `ebot` 包名，归属不可逆；需要用户的 npm 账号凭据（`npm adduser` 交互登录后执行） |
+| Rollback | npm `unpublish`（有时限）；删除后包名可能被抢注 |
 
 ### `LL-005` - 并入上游共享 Capabilities（设置 → 能力）
 
@@ -31,6 +31,18 @@
 | Rollback | `git revert` 本切片合并提交；`state.capabilities` 是新增 schema 字段，回退后旧代码自然忽略，无需数据迁移 |
 
 ## Done
+
+### `RL-004` - 发布 ebot v0.2.0：标签、Release 与 npm publish（2026-10-13）
+
+| 字段 | 内容 |
+|---|---|
+| 状态 | done（npm publish 因本机无凭据拆到 `RL-005`） |
+| Outcome | 用户能从 GitHub Release 下载 `ebot-0.2.0.tgz`，或从 Gitee/GitHub 的 `v0.2.0` 标签安装 |
+| Scope | `git tag -a v0.2.0`（附注标签，指向收口提交 `7ab5677`；收口后的 `a90d574`/`743a10e` Learn 页与控制台提交留下一版本周期）、GitHub Release（tarball + 说明）、推送 `main` 与标签到 Gitee origin 与 GitHub。附带的控制台提交：`2cb8cdc`（并行会话：LL-007、Learn 条目）、`c790485`（LL-005/LL-006、roadmap 同步基线 `7e1c518`） |
+| Evidence | 标签树验证在独立 worktree 完成（`DSH_HARNESS` 指主检出的 `ebot/dev/harness` 基座，worktree 补 `npm ci` 装 esbuild）：`npm test` 418/418、`build-client.mjs --check` 通过、lint 16 警告 0 错误（与合并基线一致）；`npm pack` 产出 38 文件 369 KB tarball；Gitee `refs/tags/v0.2.0^{}` 脱引用 = `7ab5677`；GitHub Release https://github.com/a112121788/ebot/releases/tag/v0.2.0 资产含 tarball |
+| Acceptance | Gitee `git ls-remote --tags origin` 见 `v0.2.0` → `7ab5677`；GitHub `main` 推进到 `c790485`、标签与 Release 就位；worktree 内测试、`--check`、lint 全过 |
+| Risk | GitHub 仓库实际名为 a112121788/ebot（旧名 DeepSeek-Bot 靠重定向可达）；GitHub git 直连 443 不稳，推送走 `gh auth git-credential` 通道；Release 说明写明 npm 尚未服务、安装走 tarball 或 git 标签 |
+| Rollback | 远端删标签、删 Release；本地 `git tag -d v0.2.0`；tarball 留在 `/tmp/rl004/` |
 
 ### `RL-003` - 清理 CHANGELOG 与 README 的发布漂移（2026-10-13）
 
