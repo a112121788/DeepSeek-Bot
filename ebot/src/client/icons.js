@@ -84,6 +84,8 @@ export const DuplicateIcon = lineIcon(['M7 7h8.5v9.5H7z', 'M4.5 13V3.5H13', 'M11
 export const SlidersIcon = lineIcon(['M4 6.5h5M12.5 6.5H16M4 13.5h4M11.5 13.5H16', 'M10.5 4.5v4M9.5 11.5v4'])
 // A notebook with a ribbon: what a Bot remembers.
 export const MemoryIcon = lineIcon(['M5.5 3.5h8A1.5 1.5 0 0 1 15 5v10a1.5 1.5 0 0 1-1.5 1.5h-8z', 'M5.5 3.5v13', 'M8.5 7.5h3.5M8.5 10.5h2.5', 'M12 3.5v4l1-.8 1 .8'])
+// An open book with a page fold: the crash course.
+export const BookIcon = lineIcon(['M10 5.5C8.8 4.4 7.1 4 4.5 4A.5.5 0 0 0 4 4.5v9c0 .3.2.5.5.5 2.6 0 4.3.4 5.5 1.5 1.2-1.1 2.9-1.5 5.5-1.5.3 0 .5-.2.5-.5v-9A.5.5 0 0 0 15.5 4c-2.6 0-4.3.4-5.5 1.5z', 'M10 5.5V15'])
 // Defined here, after the icons: SettingsDialog only reads them at render time.
 // Two speech bubbles, the back one peeking out: a group chat.
 export const ChatsIcon = lineIcon(['M3.5 5.5A1.5 1.5 0 0 1 5 4h7a1.5 1.5 0 0 1 1.5 1.5V10A1.5 1.5 0 0 1 12 11.5H8L5 14v-2.5A1.5 1.5 0 0 1 3.5 10z', 'M13.5 7.5H15A1.5 1.5 0 0 1 16.5 9v4.5A1.5 1.5 0 0 1 15 15v2l-2.5-2h-3A1.5 1.5 0 0 1 8 13.5V13'])
